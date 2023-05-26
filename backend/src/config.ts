@@ -24,6 +24,10 @@ class AppConfig {
   get DB_PORT() {
     return tryParseInt(process.env.DB_PORT, 'Parsing process.env.DB_PORT');
   }
+
+  get DATA_IMPORT_BUFFER_SIZE() {
+    return tryParseInt(process.env.DATA_IMPORT_BUFFER_SIZE, 'Parsing process.env.DATA_IMPORT_BUFFER_SIZE');
+  }
 }
 
 export default new AppConfig();

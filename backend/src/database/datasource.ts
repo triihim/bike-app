@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import AppConfig from './config';
+import AppConfig from '../config';
 
 const { DB_HOST, DB_NAME, DB_USER, DB_PORT, DB_PASSWORD, ENV } = AppConfig;
 

@@ -61,3 +61,15 @@ export const tryParseDate = (value?: string, extraInfo?: string): Date => {
     return date;
   }
 };
+
+export const getAbsoluteCsvFilepaths = async (relativePathToParentFolder: string): Promise<Array<string>> => {
+  return new Promise((resolve, reject) => {
+    const absoluteFolderPath = path.resolve(__dirname, relativePathToParentFolder);
+    fs.readdir(absoluteFolderPath, (error, filenames) => {
+      if (error) reject(error);
+      const csvFiles = filenames.filter((filename) => filename.toLowerCase().endsWith('.csv'));
+      const absoluteCsvFilepaths = csvFiles.map((csvFilename) => path.join(absoluteFolderPath, csvFilename));
+      resolve(absoluteCsvFilepaths);
+    });
+  });
+};
