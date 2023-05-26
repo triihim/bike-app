@@ -1,11 +1,11 @@
 import { BikeStation } from '../bike_stations/BikeStation.entity';
-import { BIKE_STATION_COLUMN_HEADERS, bikeStationMapFn } from '../bike_stations/csvmapping';
+import { BIKE_STATION_COLUMN_HEADERS, bikeStationMapFn } from '../bike_stations/csvMapping';
 import AppConfig from '../config';
 import CsvParser from '../csv/CsvParser';
 import { Journey } from '../journeys/Journey.entity';
-import { JOURNEY_COLUMN_HEADERS, journeyMapFn } from '../journeys/csvmapping';
+import { JOURNEY_COLUMN_HEADERS, journeyMapFn } from '../journeys/csvMapping';
 import { getAbsoluteCsvFilepaths } from '../util';
-import { AppDataSource } from './datasource';
+import { AppDataSource } from './dataSource';
 
 export const initialiseBikeStationData = async () => {
   const bikeStationCsvFilepaths = await getAbsoluteCsvFilepaths('../../data/bike_stations');

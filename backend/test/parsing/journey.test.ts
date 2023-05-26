@@ -1,6 +1,6 @@
 import path from 'path';
 import CsvParser from '../../src/csv/CsvParser';
-import { JOURNEY_COLUMN_HEADERS, journeyMapFn } from '../../src/journeys/csvmapping';
+import { JOURNEY_COLUMN_HEADERS, journeyMapFn } from '../../src/journeys/csvMapping';
 
 describe('Journey CSV parsing', () => {
   const csvParserBufferSize = 100; // This does not matter here, since testing csv's are small.

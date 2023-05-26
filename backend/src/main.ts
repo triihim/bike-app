@@ -1,5 +1,5 @@
 import { initialiseDatabase } from './database/initialisation';
-import { AppDataSource } from './database/datasource';
+import { AppDataSource } from './database/dataSource';
 import { startServer } from './server/server';
 
 const main = async () => {

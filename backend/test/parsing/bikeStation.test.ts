@@ -1,6 +1,6 @@
 import path from 'path';
 import CsvParser from '../../src/csv/CsvParser';
-import { BIKE_STATION_COLUMN_HEADERS, bikeStationMapFn } from '../../src/bike_stations/csvmapping';
+import { BIKE_STATION_COLUMN_HEADERS, bikeStationMapFn } from '../../src/bike_stations/csvMapping';
 
 describe('Bike station CSV parsing', () => {
   const csvParserBufferSize = 100; // This does not matter here, since testing csv's are small.

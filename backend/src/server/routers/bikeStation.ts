@@ -1,7 +1,7 @@
 import express from 'express';
 import BikeStationController from '../../bike_stations/BikeStationController';
-import { requirePageRequest } from '../middleware/requirepagerequest';
-import { requireNumberIdParam } from '../middleware/requirenumberidparam';
+import { requirePageRequest } from '../middleware/requirePageRequest';
+import { requireNumberIdParam } from '../middleware/requireNumberIdParam';
 
 const router = express.Router();
 

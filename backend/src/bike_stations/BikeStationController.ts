@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { BikeStation } from './BikeStation.entity';
-import { AppDataSource } from '../database/datasource';
+import { AppDataSource } from '../database/dataSource';
 import { NextFunction, Response } from 'express';
 import { NumberIdRequest, PageRequest } from '../types';
 import { ApiError } from '../errors';
