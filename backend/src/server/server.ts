@@ -1,6 +1,6 @@
 import express from 'express';
 import AppConfig from '../config';
-import bikeStationRouter from './routers/bikeStation';
+import bikeStationRouter from './routers/bikeStationRouter';
 import { errorHandler } from './middleware/errorHandler';
 
 const server = express();
