@@ -1,0 +1,3 @@
+Departure,Return,Departure station id,Departure station name,Return station id,Return station name,Covered distance (m),Duration (sec.)
+2021-05-31T23:56:44,2021-06-01T00:03:26,123,,121,   MISSING DEPARTURE STATION NAME  ,1025,399
+2021-05-31T23:56:23,2021-06-01T00:29:58,,           MISSING DEPARTURE STATION ID    ,065,Hernesaarenranta,4318,2009

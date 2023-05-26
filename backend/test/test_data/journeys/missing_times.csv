@@ -1,0 +1,3 @@
+Departure,Return,Departure station id,Departure station name,Return station id,Return station name,Covered distance (m),Duration (sec.)
+,2021-06-01T00:05:46,094,                           MISSING DEPARTURE               ,100,Teljäntie,2043,500
+2021-05-31T23:56:59,,082,                           MISSING RETURN                  ,113,Pasilan asema,1870,611
