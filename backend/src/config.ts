@@ -28,6 +28,10 @@ class AppConfig {
   get DATA_IMPORT_BUFFER_SIZE() {
     return tryParseInt(process.env.DATA_IMPORT_BUFFER_SIZE, 'Parsing process.env.DATA_IMPORT_BUFFER_SIZE');
   }
+
+  get SERVER_PORT() {
+    return tryParseInt(process.env.SERVER_PORT, 'Parsing process.env.SERVER_PORT');
+  }
 }
 
 export default new AppConfig();
