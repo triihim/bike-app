@@ -40,3 +40,9 @@ export interface PageRequest extends Express.Request {
     limit: number;
   };
 }
+
+export interface NumberIdRequest extends Express.Request {
+  params: {
+    id: number;
+  };
+}

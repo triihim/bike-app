@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import { BikeStation } from './BikeStation.entity';
 import { AppDataSource } from '../database/datasource';
 import { NextFunction, Response } from 'express';
-import { PageRequest } from '../types';
+import { NumberIdRequest, PageRequest } from '../types';
 import { ApiError } from '../errors';
 
 class BikeStationController {
@@ -19,6 +19,19 @@ class BikeStationController {
       return res.json({ bikeStations, count });
     } catch (error) {
       next(ApiError.internal('Something went wrong with fetching the page'));
+    }
+  };
+
+  findOneById = async (req: NumberIdRequest, res: Response, next: NextFunction) => {
+    const { id: requestedBikeStationId } = req.params;
+    try {
+      const bikeStation = await this.bikeStationRepository.findOneBy({ id: requestedBikeStationId });
+      if (bikeStation === null) {
+        return next(ApiError.notFound(`No bike station found with ID ${requestedBikeStationId}`));
+      }
+      return res.json(bikeStation);
+    } catch (error) {
+      next(ApiError.internal('Something went wrong and the bike station could not be fetched'));
     }
   };
 }
