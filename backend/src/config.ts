@@ -32,6 +32,10 @@ class AppConfig {
   get SERVER_PORT() {
     return tryParseInt(process.env.SERVER_PORT, 'Parsing process.env.SERVER_PORT');
   }
+
+  get PAGINATION_MAX_LIMIT() {
+    return tryParseInt(process.env.PAGINATION_MAX_LIMIT, 'Parsing process.env.PAGINATION_MAX_LIMIT');
+  }
 }
 
 export default new AppConfig();

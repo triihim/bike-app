@@ -1,12 +1,11 @@
 import express from 'express';
 import { errorHandler } from './middleware/errorhandler';
 import AppConfig from '../config';
+import bikeStationRouter from './routers/bikestation';
 
 const server = express();
 
-server.get('/', (req, res) => {
-  res.json({ message: 'Ping!' });
-});
+server.use('/bike-station', bikeStationRouter);
 
 server.use(errorHandler);
 

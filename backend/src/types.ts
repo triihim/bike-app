@@ -33,3 +33,10 @@ export interface CSVParseFunctionParameters<T> {
   bufferSize: number;
   bufferProcessor: CSVBufferProcessor<T>;
 }
+
+export interface PageRequest extends Express.Request {
+  query: {
+    start: number;
+    limit: number;
+  };
+}
