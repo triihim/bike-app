@@ -6,6 +6,7 @@ const GlobalStyles = createGlobalStyle<{ theme: DefaultTheme }>`
     padding: 0;
     font-family: 'Open Sans', sans-serif;
     background: ${(props) => props.theme.colors.background}}
+    color: ${(props) => props.theme.colors.textDark}
   }
 `;
 

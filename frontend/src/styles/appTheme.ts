@@ -5,7 +5,10 @@ export const appTheme = {
     background: '#ebeced',
     surface: '#fff',
     primary: '#1a1a1a',
+    primaryVariant: '#4f4f4f',
     secondary: '#303030',
+    textLight: '#fff',
+    textDark: '#1a1a1a',
   },
 };
 
