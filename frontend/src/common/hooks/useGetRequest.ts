@@ -9,15 +9,16 @@ export const useGetRequest = <TResponse>(path: string) => {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    try {
-      axios.get<TResponse>(path, { baseURL: 'http://localhost:3000' }).then((response) => {
+    axios
+      .get<TResponse>(path, { baseURL: 'http://localhost:3000' })
+      .then((response) => {
         setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setError('GET Request failed');
       });
-    } catch (error) {
-      console.error(error);
-      setError('GET Request failed');
-    }
-    setLoading(false);
   }, [path]);
 
   return { loading, data, error };
