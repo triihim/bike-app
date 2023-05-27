@@ -45,7 +45,6 @@ interface BikeStationListItemProps {
 }
 
 const BikeStationListItem = ({ bikeStation }: BikeStationListItemProps) => {
-  console.log(bikeStation.operator, bikeStation.operator.length);
   return (
     <ListItem>
       <ListItemCell label="Name" value={bikeStation.name} />
