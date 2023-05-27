@@ -15,7 +15,11 @@ class JourneyController {
   page = async (req: PageRequest, res: Response, next: NextFunction) => {
     const { start, limit } = req.query;
     try {
-      const [journeys, count] = await this.journeyRepository.findAndCount({ skip: start, take: limit });
+      const [journeys, count] = await this.journeyRepository.findAndCount({
+        skip: start,
+        take: limit,
+        order: { id: 'ASC' },
+      });
       return res.json({ journeys, count });
     } catch (error) {
       next(ApiError.internal('Something went wrong with fetching the page'));
