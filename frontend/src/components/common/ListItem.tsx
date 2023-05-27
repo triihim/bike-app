@@ -18,10 +18,12 @@ interface ListItemCellProps {
 }
 
 export const ListItemCell = ({ label, value }: ListItemCellProps) => {
+  const valueText = value.toString().trim();
+  const valueAvailable = valueText.length > 0;
   return (
     <ListItemCellWrapper>
       <span className="label">{label}</span>
-      <span className="value">{value}</span>
+      <span className="value">{valueAvailable ? valueText : 'Not available'}</span>
     </ListItemCellWrapper>
   );
 };
