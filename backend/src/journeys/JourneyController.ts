@@ -20,7 +20,7 @@ class JourneyController {
         take: limit,
         order: { id: 'ASC' },
       });
-      return res.json({ journeys, count });
+      return res.json({ data: journeys, count });
     } catch (error) {
       next(ApiError.internal('Something went wrong with fetching the page'));
     }

@@ -16,7 +16,7 @@ class BikeStationController {
     const { start, limit } = req.query;
     try {
       const [bikeStations, count] = await this.bikeStationRepository.findAndCount({ skip: start, take: limit });
-      return res.json({ bikeStations, count });
+      return res.json({ data: bikeStations, count });
     } catch (error) {
       next(ApiError.internal('Something went wrong with fetching the page'));
     }
