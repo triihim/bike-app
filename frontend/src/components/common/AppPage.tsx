@@ -1,12 +1,14 @@
 import styled from 'styled-components';
+import { Navbar } from './Navbar';
+import { Spacer, SpacerDirection } from './Spacer';
 
-interface AppLayoutProps {
-  children: React.ReactNode;
-}
-
-export const AppLayout = (props: AppLayoutProps) => {
-  return <StyledAppLayout>{props.children}</StyledAppLayout>;
-};
+export const AppPage = ({ children }: { children: React.ReactNode }) => (
+  <StyledAppLayout>
+    <Navbar />
+    <Spacer direction={SpacerDirection.Vertical} size={1} />
+    {children}
+  </StyledAppLayout>
+);
 
 const StyledAppLayout = styled.div`
   max-width: 80rem;
