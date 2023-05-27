@@ -5,13 +5,16 @@ interface JourneyListItemProps {
   journey: Journey;
 }
 
+const metersToKilometers = (meters: number) => (meters / 1000).toFixed(2);
+const secondsToMinutes = (seconds: number) => (seconds / 60).toFixed(2);
+
 export const JourneyListItem = ({ journey }: JourneyListItemProps) => {
   return (
     <StyledListItem>
       <PropertyCell label="Departure station" value={journey.departureStationName} />
       <PropertyCell label="Return station" value={journey.returnStationName} />
-      <PropertyCell label="Distance (km)" value={Math.round(journey.coveredDistanceInMeters / 1000)} />
-      <PropertyCell label="Duration (min)" value={Math.round(journey.durationInSeconds / 60).toFixed(2)} />
+      <PropertyCell label="Distance (km)" value={metersToKilometers(journey.coveredDistanceInMeters)} />
+      <PropertyCell label="Duration (min)" value={secondsToMinutes(journey.durationInSeconds)} />
     </StyledListItem>
   );
 };
