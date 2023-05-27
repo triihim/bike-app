@@ -1,9 +1,10 @@
 import { AppLayout } from './components/common/AppLayout';
+import { JourneyListView } from './components/journeys/JourneyListView';
 
 function App() {
   return (
     <AppLayout>
-      <div>Working</div>
+      <JourneyListView />
     </AppLayout>
   );
 }
