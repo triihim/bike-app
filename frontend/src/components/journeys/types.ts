@@ -6,7 +6,6 @@ export interface Journey {
   departureStationName: string;
   returnStationId: number;
   returnStationName: string;
-  returnStation: string;
   coveredDistanceInMeters: number;
   durationInSeconds: number;
 }

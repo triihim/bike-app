@@ -14,11 +14,15 @@ class JourneyController {
 
   page = async (req: PageRequest, res: Response, next: NextFunction) => {
     const { start, limit } = req.query;
+    const orderBy = req.query.orderBy
+      ? JSON.parse(req.query.orderBy.toString())
+      : { departureStationName: 'ASC', returnStationName: 'ASC' };
+
     try {
       const [journeys, count] = await this.journeyRepository.findAndCount({
         skip: start,
         take: limit,
-        order: { id: 'ASC' },
+        order: orderBy,
       });
       return res.json({ data: journeys, count });
     } catch (error) {

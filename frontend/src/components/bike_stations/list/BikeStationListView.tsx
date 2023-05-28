@@ -8,6 +8,7 @@ import { Table } from '../../common/Table';
 import { useState } from 'react';
 import { OrderBy } from '../../../common/types';
 import { OrderingButton } from '../../common/OrderingButton';
+import { assignFirstObjectProperty } from '../../../common/util';
 
 export const BikeStationListView = () => {
   const pageSize = 20;
@@ -32,12 +33,11 @@ export const BikeStationListView = () => {
     />
   );
 
-  const toggleNameOrdering = () => {
-    setOrderBy((ordering) => ({ name: ordering.name === 'ASC' ? 'DESC' : 'ASC', address: ordering.address }));
-  };
-
-  const toggleAddressOrdering = () => {
-    setOrderBy((ordering) => ({ address: ordering.address === 'ASC' ? 'DESC' : 'ASC', name: ordering.name }));
+  const toggleOrdering = (property: string) => {
+    setOrderBy((ordering) => {
+      const newPropertyOrdering = ordering[property] === 'ASC' ? 'DESC' : 'ASC';
+      return assignFirstObjectProperty(ordering, property, newPropertyOrdering);
+    });
   };
 
   return (
@@ -51,12 +51,17 @@ export const BikeStationListView = () => {
           <thead>
             <tr>
               <th>
-                Name <OrderingButton direction={orderBy.name} onClick={toggleNameOrdering} />
+                Name
+                <OrderingButton direction={orderBy.name} onClick={() => toggleOrdering('name')} />
               </th>
               <th>
-                Address <OrderingButton direction={orderBy.address} onClick={toggleAddressOrdering} />
+                Address
+                <OrderingButton direction={orderBy.address} onClick={() => toggleOrdering('address')} />
               </th>
-              <th>Capacity</th>
+              <th>
+                Capacity
+                <OrderingButton direction={orderBy.address} onClick={() => toggleOrdering('capacity')} />
+              </th>
               <th>Operator</th>
             </tr>
           </thead>

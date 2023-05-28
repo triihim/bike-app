@@ -3,15 +3,26 @@ import { usePage } from '../../common/hooks/usePage';
 import { PaginationControls } from '../common/PaginationControls';
 import { Spacer, SpacerDirection } from '../common/Spacer';
 import { HeadingWithLoader } from '../common/HeadingWithLoader';
-import { metersToKilometers, secondsToMinutes } from '../../common/util';
+import { assignFirstObjectProperty, metersToKilometers, secondsToMinutes } from '../../common/util';
 import { Table } from '../common/Table';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { OrderBy } from '../../common/types';
+import { OrderingButton } from '../common/OrderingButton';
 
 export const JourneyListView = () => {
   const pageSize = 20;
+  const [orderBy, setOrderBy] = useState<OrderBy>({
+    departureStationName: 'ASC',
+    returnStationName: 'ASC',
+    coveredDistanceInMeters: 'DESC',
+    durationInSeconds: 'DESC',
+  });
+
   const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<Journey>({
     pageSize,
     requestPath: '/journey/page',
+    orderBy,
   });
 
   const showNoJourneysMessage = !loading && !page;
@@ -28,6 +39,13 @@ export const JourneyListView = () => {
     />
   );
 
+  const toggleOrdering = (property: string) => {
+    setOrderBy((ordering) => {
+      const newPropertyOrdering = ordering[property] === 'ASC' ? 'DESC' : 'ASC';
+      return assignFirstObjectProperty(ordering, property, newPropertyOrdering);
+    });
+  };
+
   return (
     <div>
       <HeadingWithLoader label="Journeys" loading={loading} />
@@ -37,10 +55,34 @@ export const JourneyListView = () => {
       <Table>
         <thead>
           <tr>
-            <th>Departure station</th>
-            <th>Return station</th>
-            <th>Distance (km)</th>
-            <th>Duration (min)</th>
+            <th>
+              Departure station
+              <OrderingButton
+                direction={orderBy.departureStationName}
+                onClick={() => toggleOrdering('departureStationName')}
+              />
+            </th>
+            <th>
+              Return station
+              <OrderingButton
+                direction={orderBy.returnStationName}
+                onClick={() => toggleOrdering('returnStationName')}
+              />
+            </th>
+            <th>
+              Distance (km)
+              <OrderingButton
+                direction={orderBy.coveredDistanceInMeters}
+                onClick={() => toggleOrdering('coveredDistanceInMeters')}
+              />
+            </th>
+            <th>
+              Duration (min)
+              <OrderingButton
+                direction={orderBy.durationInSeconds}
+                onClick={() => toggleOrdering('durationInSeconds')}
+              />
+            </th>
           </tr>
         </thead>
         <tbody>
