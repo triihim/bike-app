@@ -1,4 +1,4 @@
-import { AppPage } from '../common/AppPage';
+import { AppPage } from '../../common/AppPage';
 import { BikeStationListView } from './BikeStationListView';
 
 export const BikeStationListPage = () => (

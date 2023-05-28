@@ -1,10 +1,10 @@
-import { usePage } from '../../common/hooks/usePage';
-import { PaginationControls } from '../common/PaginationControls';
-import { Spacer, SpacerDirection } from '../common/Spacer';
-import { HeadingWithLoader } from '../common/HeadingWithLoader';
-import { BikeStation } from './types';
-import { ListItem, ListItemCell } from '../common/ListItem';
 import { useNavigate } from 'react-router-dom';
+import { usePage } from '../../../common/hooks/usePage';
+import { HeadingWithLoader } from '../../common/HeadingWithLoader';
+import { ListItem, ListItemCell } from '../../common/ListItem';
+import { PaginationControls } from '../../common/PaginationControls';
+import { Spacer, SpacerDirection } from '../../common/Spacer';
+import { BikeStation } from '../types';
 
 export const BikeStationListView = () => {
   const pageSize = 10;

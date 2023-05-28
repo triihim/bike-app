@@ -4,9 +4,9 @@ import { ThemeProvider } from 'styled-components';
 import { appTheme } from './styles/appTheme';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { BikeStationListPage } from './components/bike_stations/BikeStationListPage';
+import { BikeStationListPage } from './components/bike_stations/list/BikeStationListPage';
 import { JourneyListPage } from './components/journeys/JourneyListPage';
-import { BikeStationDetailPage } from './components/bike_stations/BikeStationDetailPage';
+import { BikeStationDetailPage } from './components/bike_stations/detail/BikeStationDetailPage';
 
 const router = createBrowserRouter([
   {
