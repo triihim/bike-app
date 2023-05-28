@@ -12,7 +12,6 @@ export const AppPage = ({ children }: { children: React.ReactNode }) => (
 
 const StyledAppLayout = styled.div`
   max-width: 80rem;
-  min-height: 100vh;
   margin: 2rem auto;
   padding: 3rem;
   background: ${(props) => props.theme.colors.surface};
