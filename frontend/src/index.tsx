@@ -6,11 +6,16 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { BikeStationListPage } from './components/bike_stations/BikeStationListPage';
 import { JourneyListPage } from './components/journeys/JourneyListPage';
+import { BikeStationDetailPage } from './components/bike_stations/BikeStationDetailPage';
 
 const router = createBrowserRouter([
   {
     path: '/journeys',
     element: <JourneyListPage />,
+  },
+  {
+    path: '/bike-stations/:id',
+    element: <BikeStationDetailPage />,
   },
   {
     path: '/bike-stations',

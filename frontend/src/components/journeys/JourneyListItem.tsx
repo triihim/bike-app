@@ -1,12 +1,10 @@
 import { Journey } from './types';
 import { ListItem, ListItemCell } from '../common/ListItem';
+import { metersToKilometers, secondsToMinutes } from '../../common/util';
 
 interface JourneyListItemProps {
   journey: Journey;
 }
-
-const metersToKilometers = (meters: number) => (meters / 1000).toFixed(2);
-const secondsToMinutes = (seconds: number) => (seconds / 60).toFixed(2);
 
 export const JourneyListItem = ({ journey }: JourneyListItemProps) => {
   return (

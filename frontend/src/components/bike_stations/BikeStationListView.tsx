@@ -4,6 +4,7 @@ import { Spacer, SpacerDirection } from '../common/Spacer';
 import { HeadingWithLoader } from '../common/HeadingWithLoader';
 import { BikeStation } from './types';
 import { ListItem, ListItemCell } from '../common/ListItem';
+import { useNavigate } from 'react-router-dom';
 
 export const BikeStationListView = () => {
   const pageSize = 10;
@@ -45,8 +46,9 @@ interface BikeStationListItemProps {
 }
 
 const BikeStationListItem = ({ bikeStation }: BikeStationListItemProps) => {
+  const navigate = useNavigate();
   return (
-    <ListItem>
+    <ListItem onClick={() => navigate(`/bike-stations/${bikeStation.id}`)}>
       <ListItemCell label="Name" value={bikeStation.name} />
       <ListItemCell label="Address" value={`${bikeStation.address}, ${bikeStation.city}`} />
       <ListItemCell label="Capacity" value={bikeStation.capacity} />

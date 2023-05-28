@@ -9,6 +9,7 @@ export const appTheme = {
     secondary: '#303030',
     textLight: '#fff',
     textDark: '#1a1a1a',
+    textDarkVariant: '#4f4f4f',
   },
 };
 

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ListItem = styled.li`
   display: grid;
@@ -10,18 +10,29 @@ export const ListItem = styled.li`
   -webkit-box-shadow: 0px 1px 5px -3px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 1px 5px -3px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 1px 5px -3px rgba(0, 0, 0, 0.75);
+
+  ${(props) =>
+    props.onClick &&
+    css`
+      cursor: pointer;
+      :hover {
+        background: ${props.theme.colors.primary};
+        color: ${props.theme.colors.textLight};
+      }
+    `}
 `;
 
 interface ListItemCellProps {
   label: string;
   value: string | number;
+  onClick?(): void;
 }
 
-export const ListItemCell = ({ label, value }: ListItemCellProps) => {
+export const ListItemCell = ({ label, value, onClick }: ListItemCellProps) => {
   const valueText = value.toString().trim();
   const valueAvailable = valueText.length > 0;
   return (
-    <ListItemCellWrapper>
+    <ListItemCellWrapper onClick={onClick}>
       <span className="label">{label}</span>
       <span className="value">{valueAvailable ? valueText : 'Not available'}</span>
     </ListItemCellWrapper>
@@ -41,4 +52,14 @@ const ListItemCellWrapper = styled.div`
     font-weight: bold;
     font-size: 0.9rem;
   }
+
+  ${(props) =>
+    props.onClick &&
+    css`
+      cursor: pointer;
+      :hover {
+        background: ${props.theme.colors.primary};
+        color: ${props.theme.colors.textLight};
+      }
+    `}
 `;
