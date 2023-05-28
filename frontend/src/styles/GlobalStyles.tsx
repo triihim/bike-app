@@ -12,13 +12,16 @@ const GlobalStyles = createGlobalStyle<{ theme: DefaultTheme }>`
     color: ${(props) => props.theme.colors.textDark}
   }
 
+  h1,h2,h3,h4,h5,h6,p,span,th,td {
+    color: ${(props) => props.theme.colors.textDark}
+  }
+
   a {
     text-decoration: none;
     color: ${(props) => props.theme.colors.primary};
 
     :hover {
       color: ${(props) => props.theme.colors.primaryVariant};
-      font-weight: bold;
     }
   }
 `;

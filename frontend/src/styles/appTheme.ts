@@ -3,14 +3,14 @@ import 'styled-components';
 export const appTheme = {
   colors: {
     background: '#ebeced',
-    surface: '#fff',
-    primary: '#1a1a1a',
-    primaryVariant: '#4f4f4f',
-    secondary: '#303030',
-    textLight: '#fff',
-    textDark: '#1a1a1a',
+    surface: '#FCFAF9',
+    primary: '#04A777',
+    primaryVariant: '#118965',
+    secondary: '#CD5334',
+    textLight: '#FCFAF9',
+    textDark: '#35393C',
     textDarkVariant: '#4f4f4f',
-    divider: '#ddd',
+    divider: '#35393C',
   },
 };
 
