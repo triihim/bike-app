@@ -46,3 +46,11 @@ export interface NumberIdRequest extends Express.Request {
     id: number;
   };
 }
+
+export interface BikeStationStatistics {
+  bike_station_id: number;
+  journeys_starting_from_station: number;
+  journeys_returning_to_station: number;
+  departuring_journeys_avg_distance_in_meters: number;
+  returning_journeys_avg_distance_in_meters: number;
+}
