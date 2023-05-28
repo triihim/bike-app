@@ -5,13 +5,18 @@ import { PaginationControls } from '../../common/PaginationControls';
 import { Spacer, SpacerDirection } from '../../common/Spacer';
 import { BikeStation } from '../types';
 import { Table } from '../../common/Table';
+import { useState } from 'react';
+import { OrderBy } from '../../../common/types';
+import { OrderingButton } from '../../common/OrderingButton';
 
 export const BikeStationListView = () => {
   const pageSize = 20;
-  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<BikeStation>(
+  const [orderBy, setOrderBy] = useState<OrderBy>({ name: 'ASC', address: 'ASC' });
+  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<BikeStation>({
     pageSize,
-    '/bike-station/page',
-  );
+    requestPath: '/bike-station/page',
+    orderBy,
+  });
 
   const showNoBikeStations = !loading && !page;
   const hasData = page !== null;
@@ -27,6 +32,14 @@ export const BikeStationListView = () => {
     />
   );
 
+  const toggleNameOrdering = () => {
+    setOrderBy((ordering) => ({ name: ordering.name === 'ASC' ? 'DESC' : 'ASC', address: ordering.address }));
+  };
+
+  const toggleAddressOrdering = () => {
+    setOrderBy((ordering) => ({ address: ordering.address === 'ASC' ? 'DESC' : 'ASC', name: ordering.name }));
+  };
+
   return (
     <div>
       <HeadingWithLoader label="Bike Stations" loading={loading} />
@@ -37,8 +50,12 @@ export const BikeStationListView = () => {
         <Table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Address</th>
+              <th>
+                Name <OrderingButton direction={orderBy.name} onClick={toggleNameOrdering} />
+              </th>
+              <th>
+                Address <OrderingButton direction={orderBy.address} onClick={toggleAddressOrdering} />
+              </th>
               <th>Capacity</th>
               <th>Operator</th>
             </tr>

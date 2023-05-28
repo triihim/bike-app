@@ -23,8 +23,14 @@ class BikeStationController {
 
   page = async (req: PageRequest, res: Response, next: NextFunction) => {
     const { start, limit } = req.query;
+    const orderBy = req.query.orderBy ? JSON.parse(req.query.orderBy.toString()) : { name: 'ASC' };
+
     try {
-      const [bikeStations, count] = await this.bikeStationRepository.findAndCount({ skip: start, take: limit });
+      const [bikeStations, count] = await this.bikeStationRepository.findAndCount({
+        skip: start,
+        take: limit,
+        order: orderBy,
+      });
       return res.json({ data: bikeStations, count });
     } catch (error) {
       next(ApiError.internal('Something went wrong with fetching the page'));

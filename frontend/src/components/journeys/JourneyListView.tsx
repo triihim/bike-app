@@ -9,10 +9,10 @@ import { Link } from 'react-router-dom';
 
 export const JourneyListView = () => {
   const pageSize = 20;
-  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<Journey>(
+  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<Journey>({
     pageSize,
-    '/journey/page',
-  );
+    requestPath: '/journey/page',
+  });
 
   const showNoJourneysMessage = !loading && !page;
   const hasData = page !== null;

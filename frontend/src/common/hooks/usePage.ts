@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import { PageResponse } from '../types';
+import { PageResponse, usePageParams } from '../types';
 import { useGetRequest } from './useGetRequest';
 
-export const usePage = <T>(pageSize: number, requestPath: string) => {
+export const usePage = <T>({ pageSize, requestPath, initialPage, orderBy }: usePageParams) => {
   const [start, setStart] = useState(0);
   const [hasMore, setHasMore] = useState(false);
-  const [pageIndex, setPageIndex] = useState(1);
+  const [pageIndex, setPageIndex] = useState(initialPage || 1);
   const [totalPageCount, setTotalPageCount] = useState(0);
-  const {
-    loading,
-    data: page,
-    error,
-  } = useGetRequest<PageResponse<T>>(`${requestPath}?start=${start}&limit=${pageSize}`);
+
+  const orderingQuery = orderBy ? `&orderBy=${JSON.stringify(orderBy)}` : '';
+
+  const request = `${requestPath}?start=${start}&limit=${pageSize}${orderingQuery}`;
+
+  const { loading, data: page, error } = useGetRequest<PageResponse<T>>(request);
 
   useEffect(() => {
     if (page && page.count) {
