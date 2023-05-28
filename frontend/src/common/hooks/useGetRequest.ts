@@ -13,11 +13,13 @@ export const useGetRequest = <TResponse>(path: string) => {
       .get<TResponse>(path, { baseURL: 'http://localhost:3000' })
       .then((response) => {
         setData(response.data);
-        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
         setError('GET Request failed');
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [path]);
 
