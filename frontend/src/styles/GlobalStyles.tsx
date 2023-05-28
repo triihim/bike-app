@@ -18,6 +18,7 @@ const GlobalStyles = createGlobalStyle<{ theme: DefaultTheme }>`
 
     :hover {
       color: ${(props) => props.theme.colors.primaryVariant};
+      font-weight: bold;
     }
   }
 `;

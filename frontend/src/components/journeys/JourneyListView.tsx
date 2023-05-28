@@ -1,12 +1,14 @@
 import { Journey } from './types';
 import { usePage } from '../../common/hooks/usePage';
 import { PaginationControls } from '../common/PaginationControls';
-import { JourneyListItem } from './JourneyListItem';
 import { Spacer, SpacerDirection } from '../common/Spacer';
 import { HeadingWithLoader } from '../common/HeadingWithLoader';
+import { metersToKilometers, secondsToMinutes } from '../../common/util';
+import { Table } from '../common/Table';
+import { Link } from 'react-router-dom';
 
 export const JourneyListView = () => {
-  const pageSize = 10;
+  const pageSize = 20;
   const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<Journey>(
     pageSize,
     '/journey/page',
@@ -31,9 +33,33 @@ export const JourneyListView = () => {
       <HeadingWithLoader label="Journeys" loading={loading} />
       {showNoJourneysMessage && <p>No journeys available</p>}
       {controls}
-      <Spacer direction={SpacerDirection.Vertical} size={1.5} />
-      {hasData && page.data.map((journey) => <JourneyListItem key={journey.id} journey={journey} />)}
-      <Spacer direction={SpacerDirection.Vertical} size={1.5} />
+      <Spacer direction={SpacerDirection.Vertical} size={3} />
+      <Table>
+        <thead>
+          <tr>
+            <th>Departure station</th>
+            <th>Return station</th>
+            <th>Distance (km)</th>
+            <th>Duration (min)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {hasData &&
+            page.data.map((journey) => (
+              <tr key={journey.id}>
+                <td>
+                  <Link to={`/bike-stations/${journey.departureStationId}`}>{journey.departureStationName}</Link>
+                </td>
+                <td>
+                  <Link to={`/bike-stations/${journey.returnStationId}`}>{journey.returnStationName}</Link>
+                </td>
+                <td>{metersToKilometers(journey.coveredDistanceInMeters)}</td>
+                <td>{secondsToMinutes(journey.durationInSeconds)}</td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
+      <Spacer direction={SpacerDirection.Vertical} size={3} />
       {controls}
     </div>
   );

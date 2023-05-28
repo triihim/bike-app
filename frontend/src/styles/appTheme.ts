@@ -10,6 +10,7 @@ export const appTheme = {
     textLight: '#fff',
     textDark: '#1a1a1a',
     textDarkVariant: '#4f4f4f',
+    divider: '#ddd',
   },
 };
 
