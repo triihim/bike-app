@@ -2,15 +2,23 @@ import { QueryRunner, Repository } from 'typeorm';
 import { BikeStation } from './BikeStation.entity';
 import { AppDataSource } from '../database/dataSource';
 import { NextFunction, Response } from 'express';
-import { NumberIdRequest, PageRequest } from '../types';
+import { BikeStationStatistics, NumberIdRequest, PageRequest } from '../types';
 import { ApiError } from '../errors';
-import { bikeStationStatisticsQuery, isBikeStationStatistics } from './bikeStationStatistics';
+import {
+  bikeStationStatisticsQuery,
+  isBikeStationAggregates,
+  isBikeStationPopularityStatistic,
+  popularDeparturesTo,
+  popularReturnsFrom,
+} from './bikeStationStatistics';
 
 class BikeStationController {
   private bikeStationRepository: Repository<BikeStation>;
+  private queryRunner: QueryRunner;
 
   constructor() {
     this.bikeStationRepository = AppDataSource.getRepository(BikeStation);
+    this.queryRunner = AppDataSource.createQueryRunner();
   }
 
   page = async (req: PageRequest, res: Response, next: NextFunction) => {
@@ -38,29 +46,57 @@ class BikeStationController {
 
   stationStatistics = async (req: NumberIdRequest, res: Response, next: NextFunction) => {
     const { id: requestedBikeStationId } = req.params;
-    const notFoundMessage = `Could not find statistics for station id: ${requestedBikeStationId}`;
-    let queryRunner: QueryRunner | undefined;
-
     try {
-      const queryRunner = await AppDataSource.createQueryRunner();
-      await queryRunner.connect();
-      const resultRows: Array<unknown> = await queryRunner.query(bikeStationStatisticsQuery, [requestedBikeStationId]);
-
-      if (resultRows.length !== 1) {
-        return next(ApiError.notFound(notFoundMessage));
+      if (this.queryRunner.isReleased) {
+        await this.queryRunner.connect();
       }
 
-      const row = resultRows[0];
+      const takeCount = 5;
 
-      if (!isBikeStationStatistics(row)) {
-        return next(ApiError.notFound(notFoundMessage));
-      }
+      const aggregates = await this.fetchBikeStationAggregates(requestedBikeStationId);
+      const topDeparturesTo = await this.fetchPopularDeparturesToStatistics(requestedBikeStationId, takeCount);
+      const topReturnsFrom = await this.fetchPopularReturnsFromStatistics(requestedBikeStationId, takeCount);
 
-      res.json(row);
+      const statistics: BikeStationStatistics = {
+        aggregates,
+        topDeparturesTo,
+        topReturnsFrom,
+      };
+
+      res.json(statistics);
     } catch (error) {
-      next(ApiError.internal('Something went wrong and the bike station statistics could not be fetched'));
-    } finally {
-      await queryRunner?.release();
+      if (error instanceof ApiError && error) {
+        next(error);
+      } else {
+        next(ApiError.internal('Something went wrong and the bike station statistics could not be fetched'));
+      }
+    }
+  };
+
+  private fetchBikeStationAggregates = async (bikeStationId: number) => {
+    const resultRows: Array<unknown> = await this.queryRunner.query(bikeStationStatisticsQuery, [bikeStationId]);
+    if (resultRows.length === 1 && isBikeStationAggregates(resultRows[0])) {
+      return resultRows[0];
+    } else {
+      throw ApiError.notFound(`Could not find statistics for bike station id: ${bikeStationId}`);
+    }
+  };
+
+  private fetchPopularDeparturesToStatistics = async (bikeStationId: number, top: number) => {
+    const resultRows: Array<unknown> = await this.queryRunner.query(popularDeparturesTo, [bikeStationId, top]);
+    if (resultRows.length > 0 && resultRows.every(isBikeStationPopularityStatistic)) {
+      return resultRows;
+    } else {
+      throw ApiError.notFound(`Could not find popular-departures-to -statistics for bike station id: ${bikeStationId}`);
+    }
+  };
+
+  private fetchPopularReturnsFromStatistics = async (bikeStationId: number, top: number) => {
+    const resultRows: Array<unknown> = await this.queryRunner.query(popularReturnsFrom, [bikeStationId, top]);
+    if (resultRows.length > 0 && resultRows.every(isBikeStationPopularityStatistic)) {
+      return resultRows;
+    } else {
+      throw ApiError.notFound(`Could not find popular-returns-from -statistics for bike station id: ${bikeStationId}`);
     }
   };
 }

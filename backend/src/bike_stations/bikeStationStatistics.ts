@@ -1,4 +1,4 @@
-import { BikeStationStatistics } from '../types';
+import { BikeStationAggregates, BikeStationPopularity } from '../types';
 
 export const bikeStationStatisticsQuery = `
   select 
@@ -14,7 +14,35 @@ export const bikeStationStatisticsQuery = `
   group by s.id
 `;
 
-export const isBikeStationStatistics = (obj: unknown): obj is BikeStationStatistics => {
+export const popularDeparturesTo = `
+  select 
+    j.return_station_id as "bike_station_id",
+    j.return_station_name as "bike_station_name", 
+    count(j.return_station_id) as "journey_count"
+  from journeys j 
+  where j.departure_station_id = $1
+  group by 
+    j.return_station_name,
+    j.return_station_id
+  order by "journey_count" desc
+  limit $2
+`;
+
+export const popularReturnsFrom = `
+  select 
+    j.departure_station_id as "bike_station_id",
+    j.departure_station_name as "bike_station_name", 
+    count(j.departure_station_id) as "journey_count"
+  from journeys j 
+  where j.return_station_id = $1
+  group by 
+    j.departure_station_name,
+    j.departure_station_id
+  order by "journey_count" desc
+  limit $2
+`;
+
+export const isBikeStationAggregates = (obj: unknown): obj is BikeStationAggregates => {
   if (!obj || typeof obj !== 'object') return false;
   const requiredProperties = [
     'bike_station_id',
@@ -23,5 +51,11 @@ export const isBikeStationStatistics = (obj: unknown): obj is BikeStationStatist
     'departuring_journeys_avg_distance_in_meters',
     'returning_journeys_avg_distance_in_meters',
   ];
+  return requiredProperties.every((property) => property in obj);
+};
+
+export const isBikeStationPopularityStatistic = (obj: unknown): obj is BikeStationPopularity => {
+  if (!obj || typeof obj !== 'object') return false;
+  const requiredProperties = ['bike_station_id', 'bike_station_name', 'journey_count'];
   return requiredProperties.every((property) => property in obj);
 };
