@@ -21,7 +21,7 @@ export const JourneyListView = () => {
 
   const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<Journey>({
     pageSize,
-    requestPath: '/journey/page',
+    requestPath: '/journeys/page',
     orderBy,
   });
 

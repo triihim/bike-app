@@ -7,7 +7,7 @@ import { Spacer, SpacerDirection } from '../../common/Spacer';
 import { BikeStationStatistics, BikeStationPopularity } from '../types';
 
 export const StatisticsSection = ({ bikeStationId }: { bikeStationId: number }) => {
-  const { loading, data, error } = useGetRequest<BikeStationStatistics>(`/bike-station/${bikeStationId}/statistics`);
+  const { loading, data, error } = useGetRequest<BikeStationStatistics>(`/bike-stations/${bikeStationId}/statistics`);
 
   if (loading) return <CenteredLoader />;
 

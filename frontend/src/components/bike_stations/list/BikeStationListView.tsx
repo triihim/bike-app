@@ -15,7 +15,7 @@ export const BikeStationListView = () => {
   const [orderBy, setOrderBy] = useState<OrderBy>({ name: 'ASC', address: 'ASC' });
   const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<BikeStation>({
     pageSize,
-    requestPath: '/bike-station/page',
+    requestPath: '/bike-stations/page',
     orderBy,
   });
 
