@@ -62,6 +62,19 @@ export const tryParseDate = (value?: string, extraInfo?: string): Date => {
   }
 };
 
+export const tryParseBool = (value?: string, extraInfo?: string): boolean => {
+  const errorMessage = getErrorMessage('bool', value, extraInfo);
+
+  if (value === undefined) throw new ParsingError(errorMessage);
+
+  const maybeBool = value.toLowerCase();
+
+  if (maybeBool === 'true') return true;
+  if (maybeBool === 'false') return false;
+
+  throw new ParsingError(errorMessage);
+};
+
 export const getAbsoluteCsvFilepaths = async (pathToCsvFolder: string): Promise<Array<string>> => {
   return new Promise((resolve, reject) => {
     fs.readdir(pathToCsvFolder, (error, filenames) => {

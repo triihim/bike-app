@@ -1,4 +1,4 @@
-import { tryParseInt, tryParseNonEmptyString } from './util';
+import { tryParseBool, tryParseInt, tryParseNonEmptyString } from './util';
 
 class AppConfig {
   get ENV() {
@@ -27,6 +27,13 @@ class AppConfig {
 
   get DATA_IMPORT_BUFFER_SIZE() {
     return tryParseInt(process.env.DATA_IMPORT_BUFFER_SIZE, 'Parsing process.env.DATA_IMPORT_BUFFER_SIZE');
+  }
+
+  get DISABLE_LOGGING_DURING_DATA_IMPORT() {
+    return tryParseBool(
+      process.env.DISABLE_LOGGING_DURING_DATA_IMPORT,
+      'Parsing process.env.DISABLE_LOGGING_DURING_DATA_IMPORT',
+    );
   }
 
   get SERVER_PORT() {

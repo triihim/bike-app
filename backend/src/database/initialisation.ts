@@ -1,3 +1,4 @@
+import { DataSource } from 'typeorm';
 import { BikeStation } from '../bike_stations/BikeStation.entity';
 import { BIKE_STATION_COLUMN_HEADERS, bikeStationMapFn } from '../bike_stations/csvMapping';
 import AppConfig from '../config';
@@ -5,13 +6,21 @@ import CsvParser from '../csv/CsvParser';
 import { Journey } from '../journeys/Journey.entity';
 import { JOURNEY_COLUMN_HEADERS, journeyMapFn } from '../journeys/csvMapping';
 import { getAbsoluteCsvFilepaths } from '../util';
-import { AppDataSource } from './dataSource';
+import { APP_DATA_SOURCE_CONFIG, AppDataSource } from './dataSource';
 import path from 'path';
 
 export const initialiseBikeStationData = async () => {
   const bikeStationsCsvFolderPath = path.resolve(__dirname, '../../data/bike_stations');
   const bikeStationCsvFilepaths = await getAbsoluteCsvFilepaths(bikeStationsCsvFolderPath);
-  const queryBuilder = AppDataSource.createQueryBuilder();
+
+  const dataSource = new DataSource({
+    ...APP_DATA_SOURCE_CONFIG,
+    logging: AppConfig.DISABLE_LOGGING_DURING_DATA_IMPORT ? false : true,
+  });
+
+  await dataSource.initialize();
+
+  const queryBuilder = dataSource.createQueryBuilder();
 
   const csvInsertions = bikeStationCsvFilepaths.map((csvPath) => {
     const parser = new CsvParser(csvPath, BIKE_STATION_COLUMN_HEADERS, bikeStationMapFn);
@@ -26,13 +35,22 @@ export const initialiseBikeStationData = async () => {
     });
   });
 
-  return Promise.all(csvInsertions);
+  await Promise.all(csvInsertions);
+  await dataSource.destroy();
 };
 
 export const initialiseJourneyData = async () => {
   const journeysCsvFolderPath = path.resolve(__dirname, '../../data/journeys');
   const journeyCsvFilepaths = await getAbsoluteCsvFilepaths(journeysCsvFolderPath);
-  const queryBuilder = AppDataSource.createQueryBuilder();
+
+  const dataSource = new DataSource({
+    ...APP_DATA_SOURCE_CONFIG,
+    logging: AppConfig.DISABLE_LOGGING_DURING_DATA_IMPORT ? false : true,
+  });
+
+  await dataSource.initialize();
+
+  const queryBuilder = dataSource.createQueryBuilder();
 
   const csvInsertions = journeyCsvFilepaths.map((csvPath) => {
     const parser = new CsvParser(csvPath, JOURNEY_COLUMN_HEADERS, journeyMapFn);
@@ -66,6 +84,8 @@ export const initialiseJourneyData = async () => {
     .execute();
 
   console.log(`Removed ${deleteResult.affected} journeys due to non-existing departure or return bike station`);
+
+  await dataSource.destroy();
 };
 
 export const initialiseDatabase = async () => {
