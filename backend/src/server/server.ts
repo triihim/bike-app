@@ -9,8 +9,8 @@ const server = express();
 
 server.use(cors());
 
-server.use('/bike-station', bikeStationRouter);
-server.use('/journey', journeyRouter);
+server.use('/bike-stations', bikeStationRouter);
+server.use('/journeys', journeyRouter);
 
 server.use(errorHandler);
 
