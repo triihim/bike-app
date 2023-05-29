@@ -6,12 +6,14 @@ import { Journey } from '../journeys/Journey.entity';
 import { JOURNEY_COLUMN_HEADERS, journeyMapFn } from '../journeys/csvMapping';
 import { getAbsoluteCsvFilepaths } from '../util';
 import { AppDataSource } from './dataSource';
+import path from 'path';
 
 export const initialiseBikeStationData = async () => {
-  const bikeStationCsvFilepaths = await getAbsoluteCsvFilepaths('../../data/bike_stations');
+  const bikeStationsCsvFolderPath = path.resolve(__dirname, '../../data/bike_stations');
+  const bikeStationCsvFilepaths = await getAbsoluteCsvFilepaths(bikeStationsCsvFolderPath);
   const queryBuilder = AppDataSource.createQueryBuilder();
 
-  const insertions = bikeStationCsvFilepaths.map((csvPath) => {
+  const csvInsertions = bikeStationCsvFilepaths.map((csvPath) => {
     const parser = new CsvParser(csvPath, BIKE_STATION_COLUMN_HEADERS, bikeStationMapFn);
     let insertionCount = 0;
     return parser.parse({
@@ -24,14 +26,15 @@ export const initialiseBikeStationData = async () => {
     });
   });
 
-  return Promise.all(insertions);
+  return Promise.all(csvInsertions);
 };
 
 export const initialiseJourneyData = async () => {
-  const journeyCsvFilepaths = await getAbsoluteCsvFilepaths('../../data/journeys');
+  const journeysCsvFolderPath = path.resolve(__dirname, '../../data/journeys');
+  const journeyCsvFilepaths = await getAbsoluteCsvFilepaths(journeysCsvFolderPath);
   const queryBuilder = AppDataSource.createQueryBuilder();
 
-  const insertions = journeyCsvFilepaths.map((csvPath) => {
+  const csvInsertions = journeyCsvFilepaths.map((csvPath) => {
     const parser = new CsvParser(csvPath, JOURNEY_COLUMN_HEADERS, journeyMapFn);
     let insertionCount = 0;
     return parser.parse({
@@ -44,7 +47,25 @@ export const initialiseJourneyData = async () => {
     });
   });
 
-  return Promise.all(insertions);
+  await Promise.all(csvInsertions);
+
+  // TODO: Fancier way of ensuring that journeys without an existing bike station do not end up in the db.
+  //       Due to potentially huge datasets, individual insertion with row skips in case of foreign key violaton is too slow.
+  //       So far I haven't figured out a way to batch insert such that journeys with invalid foreign keys would simply be skipped.
+
+  const existingBikeStationIds = (await queryBuilder.select('id').from(BikeStation, '').execute()).map(
+    (result: unknown) => (result && typeof result === 'object' && 'id' in result ? result.id : -1),
+  );
+
+  const deleteResult = await queryBuilder
+    .delete()
+    .from(Journey, 'journey')
+    .where('return_station_id not in (:...ids) or departure_station_id not in (:...ids)', {
+      ids: existingBikeStationIds,
+    })
+    .execute();
+
+  console.log(`Removed ${deleteResult.affected} journeys due to non-existing departure or return bike station`);
 };
 
 export const initialiseDatabase = async () => {
@@ -61,7 +82,7 @@ export const initialiseDatabase = async () => {
   }
 
   if (journeysInitialised) {
-    console.log('Journeys already initialised');
+    console.log('Journeys already imported');
   } else {
     await initialiseJourneyData();
     console.log('Journeys initialised successfully');
