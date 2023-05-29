@@ -11,7 +11,7 @@ import { StatisticsSection } from './StatisticsSection';
 export const BikeStationDetailPage = () => {
   const { id } = useParams();
 
-  const { loading, data, error } = useGetRequest<BikeStation>(`/bike-stations/${id}`);
+  const { loading, data } = useGetRequest<BikeStation>(`/bike-stations/${id}`);
 
   if (loading) return <CenteredLoader />;
 
