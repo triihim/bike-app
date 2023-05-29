@@ -10,7 +10,7 @@ export const useGetRequest = <TResponse>(path: string) => {
     setLoading(true);
     setError(null);
     axios
-      .get<TResponse>(path, { baseURL: 'http://localhost:3000' })
+      .get<TResponse>(path, { baseURL: process.env.REACT_APP_API_BASE_URL })
       .then((response) => {
         setData(response.data);
       })

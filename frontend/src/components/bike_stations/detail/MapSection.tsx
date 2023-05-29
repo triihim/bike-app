@@ -5,14 +5,12 @@ interface MapSectionProps {
   latitude: number;
 }
 
-const MAPS_API_KEY = 'AIzaSyCNGEg-0X4cKy9LJQ4UIzUnadv6Gv2HS7Q';
-
 export const MapSection = (props: MapSectionProps) => {
   return (
     <MapSectionWrapper>
       <iframe
         referrerPolicy="no-referrer-when-downgrade"
-        src={`https://www.google.com/maps/embed/v1/place?key=${MAPS_API_KEY}&q=${props.latitude},${props.longitude}`}
+        src={`https://www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&q=${props.latitude},${props.longitude}`}
       ></iframe>
     </MapSectionWrapper>
   );
