@@ -17,6 +17,7 @@ class CsvParser<TRow, TMapped> {
   parse({ bufferSize, bufferProcessor }: CSVParseFunctionParameters<TMapped>): Promise<void> {
     return new Promise((resolve, reject) => {
       let buffer: Array<TMapped> = [];
+      const runningProcessors: Array<Promise<void>> = [];
 
       const processRow = (row: TRow) => {
         const mapped = this._rowMappingFunction(row);
@@ -27,7 +28,7 @@ class CsvParser<TRow, TMapped> {
 
       const maybeFlushBuffer = () => {
         if (buffer.length >= bufferSize) {
-          bufferProcessor([...buffer]);
+          runningProcessors.push(bufferProcessor([...buffer]));
           buffer = [];
         }
       };
@@ -42,8 +43,8 @@ class CsvParser<TRow, TMapped> {
           reject(err);
         })
         .on('end', () => {
-          bufferProcessor([...buffer]); // Remaining buffer that did not necessarily reach bufferSize.
-          resolve();
+          runningProcessors.push(bufferProcessor([...buffer])); // Remaining buffer that did not necessarily reach bufferSize.
+          Promise.all(runningProcessors).then(() => resolve());
         });
     });
   }
