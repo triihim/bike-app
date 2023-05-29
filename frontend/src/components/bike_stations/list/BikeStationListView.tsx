@@ -19,8 +19,7 @@ export const BikeStationListView = () => {
     orderBy,
   });
 
-  const showNoBikeStations = !loading && !page;
-  const hasData = page !== null;
+  const hasData = page !== null && page.count > 0;
 
   const controls = (
     <PaginationControls
@@ -43,46 +42,62 @@ export const BikeStationListView = () => {
   return (
     <div>
       <HeadingWithLoader label="Bike Stations" loading={loading} />
-      {showNoBikeStations && <p>No bike stations available</p>}
-      {controls}
-      <Spacer direction={SpacerDirection.Vertical} size={3} />
-      {hasData && (
-        <Table>
-          <thead>
-            <tr>
-              <th>
-                Name
-                <OrderingButton direction={orderBy.name} onClick={() => toggleOrdering('name')} />
-              </th>
-              <th>
-                Address
-                <OrderingButton direction={orderBy.address} onClick={() => toggleOrdering('address')} />
-              </th>
-              <th>
-                Capacity
-                <OrderingButton direction={orderBy.address} onClick={() => toggleOrdering('capacity')} />
-              </th>
-              <th>Operator</th>
-            </tr>
-          </thead>
-          <tbody>
-            {page.data.map((bikeStation) => (
-              <tr key={bikeStation.id}>
-                <td>
-                  <Link to={`/bike-stations/${bikeStation.id}`}>{bikeStation.name}</Link>
-                </td>
-                <td>
-                  {bikeStation.address}, {bikeStation.city}
-                </td>
-                <td>{bikeStation.capacity}</td>
-                <td>{bikeStation.operator}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+      {!hasData && !loading ? (
+        <p>No bike stations available</p>
+      ) : (
+        <>
+          {controls}
+          <Spacer direction={SpacerDirection.Vertical} size={3} />
+          {hasData && <BikeStationsTable bikeStations={page?.data} orderBy={orderBy} toggleOrdering={toggleOrdering} />}
+          <Spacer direction={SpacerDirection.Vertical} size={3} />
+          {controls}
+        </>
       )}
-      <Spacer direction={SpacerDirection.Vertical} size={3} />
-      {controls}
     </div>
+  );
+};
+
+interface BikeStationsTableProps {
+  bikeStations: Array<BikeStation>;
+  orderBy: OrderBy;
+  toggleOrdering: (property: string) => void;
+}
+
+const BikeStationsTable = (props: BikeStationsTableProps) => {
+  const { bikeStations, orderBy, toggleOrdering } = props;
+  return (
+    <Table>
+      <thead>
+        <tr>
+          <th>
+            Name
+            <OrderingButton direction={orderBy.name} onClick={() => toggleOrdering('name')} />
+          </th>
+          <th>
+            Address
+            <OrderingButton direction={orderBy.address} onClick={() => toggleOrdering('address')} />
+          </th>
+          <th>
+            Capacity
+            <OrderingButton direction={orderBy.capacity} onClick={() => toggleOrdering('capacity')} />
+          </th>
+          <th>Operator</th>
+        </tr>
+      </thead>
+      <tbody>
+        {bikeStations.map((bikeStation) => (
+          <tr key={bikeStation.id}>
+            <td>
+              <Link to={`/bike-stations/${bikeStation.id}`}>{bikeStation.name}</Link>
+            </td>
+            <td>
+              {bikeStation.address}, {bikeStation.city}
+            </td>
+            <td>{bikeStation.capacity}</td>
+            <td>{bikeStation.operator}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
 };
