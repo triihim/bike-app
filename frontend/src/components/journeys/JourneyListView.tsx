@@ -25,8 +25,7 @@ export const JourneyListView = () => {
     orderBy,
   });
 
-  const showNoJourneysMessage = !loading && !page;
-  const hasData = page !== null;
+  const hasData = page !== null && page.count > 0;
 
   const controls = (
     <PaginationControls
@@ -49,60 +48,71 @@ export const JourneyListView = () => {
   return (
     <div>
       <HeadingWithLoader label="Journeys" loading={loading} />
-      {showNoJourneysMessage && <p>No journeys available</p>}
-      {controls}
-      <Spacer direction={SpacerDirection.Vertical} size={3} />
-      <Table>
-        <thead>
-          <tr>
-            <th>
-              Departure station
-              <OrderingButton
-                direction={orderBy.departureStationName}
-                onClick={() => toggleOrdering('departureStationName')}
-              />
-            </th>
-            <th>
-              Return station
-              <OrderingButton
-                direction={orderBy.returnStationName}
-                onClick={() => toggleOrdering('returnStationName')}
-              />
-            </th>
-            <th>
-              Distance (km)
-              <OrderingButton
-                direction={orderBy.coveredDistanceInMeters}
-                onClick={() => toggleOrdering('coveredDistanceInMeters')}
-              />
-            </th>
-            <th>
-              Duration (min)
-              <OrderingButton
-                direction={orderBy.durationInSeconds}
-                onClick={() => toggleOrdering('durationInSeconds')}
-              />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {hasData &&
-            page.data.map((journey) => (
-              <tr key={journey.id}>
-                <td>
-                  <Link to={`/bike-stations/${journey.departureStationId}`}>{journey.departureStationName}</Link>
-                </td>
-                <td>
-                  <Link to={`/bike-stations/${journey.returnStationId}`}>{journey.returnStationName}</Link>
-                </td>
-                <td>{metersToKilometers(journey.coveredDistanceInMeters)}</td>
-                <td>{secondsToMinutes(journey.durationInSeconds)}</td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
-      <Spacer direction={SpacerDirection.Vertical} size={3} />
-      {controls}
+      {!hasData && !loading ? (
+        <p>No journeys available</p>
+      ) : (
+        <>
+          {controls}
+          <Spacer direction={SpacerDirection.Vertical} size={3} />
+          {hasData && <JourneyTable journeys={page?.data} orderBy={orderBy} toggleOrdering={toggleOrdering} />}
+          <Spacer direction={SpacerDirection.Vertical} size={3} />
+          {controls}
+        </>
+      )}
     </div>
+  );
+};
+
+interface JourneyTableProps {
+  journeys: Array<Journey>;
+  orderBy: OrderBy;
+  toggleOrdering: (property: string) => void;
+}
+
+const JourneyTable = (props: JourneyTableProps) => {
+  const { journeys, orderBy, toggleOrdering } = props;
+  return (
+    <Table>
+      <thead>
+        <tr>
+          <th>
+            Departure station
+            <OrderingButton
+              direction={orderBy.departureStationName}
+              onClick={() => toggleOrdering('departureStationName')}
+            />
+          </th>
+          <th>
+            Return station
+            <OrderingButton direction={orderBy.returnStationName} onClick={() => toggleOrdering('returnStationName')} />
+          </th>
+          <th>
+            Distance (km)
+            <OrderingButton
+              direction={orderBy.coveredDistanceInMeters}
+              onClick={() => toggleOrdering('coveredDistanceInMeters')}
+            />
+          </th>
+          <th>
+            Duration (min)
+            <OrderingButton direction={orderBy.durationInSeconds} onClick={() => toggleOrdering('durationInSeconds')} />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {journeys.map((journey) => (
+          <tr key={journey.id}>
+            <td>
+              <Link to={`/bike-stations/${journey.departureStationId}`}>{journey.departureStationName}</Link>
+            </td>
+            <td>
+              <Link to={`/bike-stations/${journey.returnStationId}`}>{journey.returnStationName}</Link>
+            </td>
+            <td>{metersToKilometers(journey.coveredDistanceInMeters)}</td>
+            <td>{secondsToMinutes(journey.durationInSeconds)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
 };
