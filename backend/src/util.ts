@@ -75,7 +75,7 @@ export const tryParseBool = (value?: string, extraInfo?: string): boolean => {
   throw new ParsingError(errorMessage);
 };
 
-export const getAbsoluteCsvFilepaths = async (pathToCsvFolder: string): Promise<Array<string>> => {
+export const getAbsoluteCsvFilepaths = (pathToCsvFolder: string): Promise<Array<string>> => {
   return new Promise((resolve, reject) => {
     fs.readdir(pathToCsvFolder, (error, filenames) => {
       if (error) return reject(error);
