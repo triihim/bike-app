@@ -4,6 +4,7 @@ import { AppDataSource } from '../database/dataSource';
 import { PageRequest } from '../types';
 import { NextFunction, Response } from 'express';
 import { ApiError } from '../errors';
+import { getOrderBy } from '../util';
 
 class JourneyController {
   private journeyRepository: Repository<Journey>;
@@ -13,16 +14,16 @@ class JourneyController {
   }
 
   page = async (req: PageRequest, res: Response, next: NextFunction) => {
-    const { start, limit } = req.query;
-    const orderBy = req.query.orderBy
-      ? JSON.parse(req.query.orderBy.toString())
-      : { departureStationName: 'ASC', returnStationName: 'ASC' };
+    const { start, limit, sortColumn, sortDirection } = req.query;
+
+    const validOrderingColumns = this.journeyRepository.metadata.columns.map((column) => column.propertyName);
+    const ordering = getOrderBy(validOrderingColumns, sortColumn, sortDirection);
 
     try {
       const [journeys, count] = await this.journeyRepository.findAndCount({
         skip: start,
         take: limit,
-        order: orderBy,
+        order: ordering || { departureStationName: 'ASC' },
       });
       return res.json({ data: journeys, count });
     } catch (error) {

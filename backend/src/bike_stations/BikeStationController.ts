@@ -11,6 +11,7 @@ import {
   popularDeparturesTo,
   popularReturnsFrom,
 } from './bikeStationStatistics';
+import { getOrderBy } from '../util';
 
 class BikeStationController {
   private bikeStationRepository: Repository<BikeStation>;
@@ -22,14 +23,16 @@ class BikeStationController {
   }
 
   page = async (req: PageRequest, res: Response, next: NextFunction) => {
-    const { start, limit } = req.query;
-    const orderBy = req.query.orderBy ? JSON.parse(req.query.orderBy.toString()) : { name: 'ASC' };
+    const { start, limit, sortColumn, sortDirection } = req.query;
+
+    const validOrderingColumns = this.bikeStationRepository.metadata.columns.map((column) => column.propertyName);
+    const ordering = getOrderBy(validOrderingColumns, sortColumn, sortDirection);
 
     try {
       const [bikeStations, count] = await this.bikeStationRepository.findAndCount({
         skip: start,
         take: limit,
-        order: orderBy,
+        order: ordering || { name: 'ASC' },
       });
       return res.json({ data: bikeStations, count });
     } catch (error) {

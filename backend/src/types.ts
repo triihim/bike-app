@@ -38,7 +38,8 @@ export interface PageRequest extends Express.Request {
   query: {
     start: number;
     limit: number;
-    orderBy?: { [property: string]: 'ASC' | 'DESC' };
+    sortColumn?: string;
+    sortDirection?: 'ASC' | 'DESC';
   };
 }
 

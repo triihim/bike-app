@@ -1,0 +1,4 @@
+@URL = http://localhost:8000/bike-stations
+
+# Page request
+GET {{URL}}/page?start=0&limit=2

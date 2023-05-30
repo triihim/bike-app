@@ -85,3 +85,13 @@ export const getAbsoluteCsvFilepaths = (pathToCsvFolder: string): Promise<Array<
     });
   });
 };
+
+export const getOrderBy = (validColumnNames: Array<string>, sortColumn?: string, sortDirection?: string) => {
+  if (sortColumn && sortDirection) {
+    if (validColumnNames.includes(sortColumn)) {
+      const direction = sortDirection.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+      return { [sortColumn]: direction };
+    }
+  }
+  return undefined;
+};
