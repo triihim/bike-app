@@ -1,4 +1,10 @@
 @URL = http://localhost:8000/bike-stations
 
-# Page request
+### Page request
 GET {{URL}}/page?start=0&limit=2
+
+### Sorted page request
+GET {{URL}}/page?start=0&limit=10&sortColumn=name&sortDirection=ASC
+
+### Filtered page request
+GET {{URL}}/page?start=0&limit=10&filterColumn=name&filterValue=Aalto

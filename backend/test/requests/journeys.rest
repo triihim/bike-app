@@ -2,3 +2,9 @@
 
 # Page request
 GET {{URL}}/page?start=0&limit=2
+
+### Sorted page request
+GET {{URL}}/page?start=0&limit=10&sortColumn=departureStationName&sortDirection=DESC
+
+### Filtered page request
+GET {{URL}}/page?start=0&limit=10&filterColumn=departureStationName&filterValue=Aalto

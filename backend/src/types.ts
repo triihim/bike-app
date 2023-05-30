@@ -40,6 +40,8 @@ export interface PageRequest extends Express.Request {
     limit: number;
     sortColumn?: string;
     sortDirection?: 'ASC' | 'DESC';
+    filterColumn?: string | Array<string>;
+    filterValue?: string | Array<string>;
   };
 }
 

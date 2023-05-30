@@ -1,6 +1,7 @@
 import path from 'path';
 import { ParsingError } from './errors';
 import fs from 'fs';
+import { ILike } from 'typeorm';
 
 const getErrorMessage = (typename: string, value?: unknown, extraInfo?: string) => {
   let message = `Could not parse ${typename} from ${value}`;
@@ -93,5 +94,24 @@ export const getOrderBy = (validColumnNames: Array<string>, sortColumn?: string,
       return { [sortColumn]: direction };
     }
   }
+  return undefined;
+};
+
+export const getWhereBeginsLike = (
+  validColumnNames: Array<string>,
+  filterColumn?: string | Array<string>,
+  filterValue?: string | Array<string>,
+) => {
+  filterColumn = typeof filterColumn === 'string' ? [filterColumn] : filterColumn;
+  filterValue = typeof filterValue === 'string' ? [filterValue] : filterValue;
+
+  if (filterColumn && filterValue && filterColumn.length === filterValue.length) {
+    return filterColumn.reduce((where, column, index) => {
+      return validColumnNames.includes(column) && filterValue
+        ? { ...where, [column]: ILike(`${filterValue[index]}%`) }
+        : where;
+    }, {});
+  }
+
   return undefined;
 };

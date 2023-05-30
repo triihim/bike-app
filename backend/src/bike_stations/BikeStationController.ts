@@ -1,4 +1,4 @@
-import { QueryRunner, Repository } from 'typeorm';
+import { ILike, QueryRunner, Repository } from 'typeorm';
 import { BikeStation } from './BikeStation.entity';
 import { AppDataSource } from '../database/dataSource';
 import { NextFunction, Response } from 'express';
@@ -11,7 +11,7 @@ import {
   popularDeparturesTo,
   popularReturnsFrom,
 } from './bikeStationStatistics';
-import { getOrderBy } from '../util';
+import { getOrderBy, getWhereBeginsLike } from '../util';
 
 class BikeStationController {
   private bikeStationRepository: Repository<BikeStation>;
@@ -23,16 +23,18 @@ class BikeStationController {
   }
 
   page = async (req: PageRequest, res: Response, next: NextFunction) => {
-    const { start, limit, sortColumn, sortDirection } = req.query;
+    const { start, limit, sortColumn, sortDirection, filterColumn, filterValue } = req.query;
 
-    const validOrderingColumns = this.bikeStationRepository.metadata.columns.map((column) => column.propertyName);
-    const ordering = getOrderBy(validOrderingColumns, sortColumn, sortDirection);
+    const validColumnNames = this.bikeStationRepository.metadata.columns.map((column) => column.propertyName);
+    const ordering = getOrderBy(validColumnNames, sortColumn, sortDirection);
+    const filtering = getWhereBeginsLike(validColumnNames, filterColumn, filterValue);
 
     try {
       const [bikeStations, count] = await this.bikeStationRepository.findAndCount({
         skip: start,
         take: limit,
         order: ordering || { name: 'ASC' },
+        where: filtering,
       });
       return res.json({ data: bikeStations, count });
     } catch (error) {
