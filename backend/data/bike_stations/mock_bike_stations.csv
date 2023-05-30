@@ -1,0 +1,11 @@
+FID,ID,Nimi,Namn,Name,Osoite,Adress,Kaupunki,Stad,Operaattor,Kapasiteet,x,y
+1000,1000,Mock Station 1,Mock Station 1,Mock Station 1,Mock Address 1,Mock Address 1,Helsinki,Helsinki,Mock Operator 1,15,24.987654,60.123456
+1001,1001,Mock Station 2,Mock Station 2,Mock Station 2,Mock Address 2,Mock Address 2,Helsinki,Helsinki,Mock Operator 2,18,24.987655,60.123457
+1002,1002,Mock Station 3,Mock Station 3,Mock Station 3,Mock Address 3,Mock Address 3,Helsinki,Helsinki,Mock Operator 3,12,24.987656,60.123458
+1003,1003,Mock Station 4,Mock Station 4,Mock Station 4,Mock Address 4,Mock Address 4,Helsinki,Helsinki,Mock Operator 4,20,24.987657,60.123459
+1004,1004,Mock Station 5,Mock Station 5,Mock Station 5,Mock Address 5,Mock Address 5,Helsinki,Helsinki,Mock Operator 5,25,24.987658,60.123460
+1005,1005,Mock Station 6,Mock Station 6,Mock Station 6,Mock Address 6,Mock Address 6,Helsinki,Helsinki,Mock Operator 6,16,24.987659,60.123461
+1006,1006,Mock Station 7,Mock Station 7,Mock Station 7,Mock Address 7,Mock Address 7,Helsinki,Helsinki,Mock Operator 7,14,24.987660,60.123462
+1007,1007,Mock Station 8,Mock Station 8,Mock Station 8,Mock Address 8,Mock Address 8,Helsinki,Helsinki,Mock Operator 8,22,24.987661,60.123463
+1008,1008,Mock Station 9,Mock Station 9,Mock Station 9,Mock Address 9,Mock Address 9,Helsinki,Helsinki,Mock Operator 9,19,24.987662,60.123464
+1009,1009,Mock Station 10,Mock Station 10,Mock Station 10,Mock Address 10,Mock Address 10,Helsinki,Helsinki,Mock Operator 10,21,24.987663,60.123465
