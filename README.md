@@ -42,6 +42,23 @@ Alternatively one can use the provided startup scripts, which might require sett
 - Startup script for PowerShell: [start_app.ps1](./start_app.ps1)
 - Startup script for Linux/Mac: [start_app.sh](./start_app.sh)
 
+To shutdown the backend, run the following:
+
+```bash
+# Stopping the containers
+cd ./backend
+npm run dev:container:shutdown
+```
+
+Frontend is shutdown by closing the terminal it runs in, or by stopping the process with CTRL-C.
+
+### Troubleshooting
+
+- If any part of the app fails to start, check that nothing else is using the following ports:
+  - **8000** (server uses this port)
+  - **5432** (database uses this port, exposed outside of docker so that server can access it even if ran outside container)
+  - **3000** (react scripts serve frontend on this port)
+
 ---
 
 ## Data importing
