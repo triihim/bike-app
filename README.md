@@ -54,8 +54,8 @@ Details on parsing can be found under:
 
 To initialize the database with bike stations and journeys from csv files, place the csv files to
 
-- _/backend/data/bike_stations_
-- _/backend/data/journeys_
+- [/backend/data/bike_stations](/backend/data/bike_stations)
+- [/backend/data/journeys](/backend/data/journeys)
 
 **The application will read all csv files from those folders on startup**, and attempt to parse and import them into the database. However **if the database already has either bike stations or journeys, the import step will be skipped**. Once imported data can be deleted by running the following:
 
@@ -88,6 +88,7 @@ Due to discovering this pre-assignment only a few days before the deadline, ther
 | TODO | Caching. Currently, especially filtering sends a lot of requests to the backend despite debouncing. Data is anyway quite stable                         |
 | TODO | Journey addition endpoint and corresponding UI                                                                                                          |
 | TODO | Bike station addition endpoint and corresponding UI                                                                                                     |
+| TODO | Document npm scripts to this readme or to frontend/backend specific readme                                                                              |
 
 ---
 
