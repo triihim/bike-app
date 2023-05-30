@@ -6,6 +6,7 @@
   "scripts": {
     "dev:container:rebuild": "docker compose --env-file ./environments/development.env up --force-recreate --build server",
     "dev:container": "docker compose --env-file ./environments/development.env up",
+    "dev:container:shutdown": "docker compose --env-file ./environments/development.env down",
     "dev:server": "ts-node -r dotenv/config src/main.ts dotenv_config_path=./environments/development.env",
     "dev:db": "docker compose --env-file ./environments/development.env up db",
     "dev:db:clean": "docker compose --env-file ./environments/development.env down -v",
