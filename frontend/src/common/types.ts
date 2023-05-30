@@ -3,13 +3,14 @@ export interface PageResponse<T> {
   count: number;
 }
 
-export interface OrderBy {
-  [property: string]: 'ASC' | 'DESC';
+export interface OrderBy<T> {
+  property: keyof T;
+  direction: 'ASC' | 'DESC';
 }
 
-export interface usePageParams {
+export interface usePageParams<T> {
   pageSize: number;
   requestPath: string;
   initialPage?: number;
-  orderBy?: OrderBy;
+  orderBy?: OrderBy<T>;
 }

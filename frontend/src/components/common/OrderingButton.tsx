@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 interface OrderingButtonProps {
-  direction: 'ASC' | 'DESC';
+  direction?: 'ASC' | 'DESC';
   onClick(): void;
 }
 
@@ -13,9 +14,13 @@ const OrderingButtonWrapper = styled.div`
 `;
 
 export const OrderingButton = ({ direction, onClick }: OrderingButtonProps) => {
-  return (
-    <OrderingButtonWrapper onClick={onClick}>
-      {direction === 'ASC' ? <span>&uarr;</span> : <span>&darr;</span>}
-    </OrderingButtonWrapper>
-  );
+  let symbol = <FaSort />;
+
+  if (direction === 'ASC') {
+    symbol = <FaSortUp />;
+  } else if (direction === 'DESC') {
+    symbol = <FaSortDown />;
+  }
+
+  return <OrderingButtonWrapper onClick={onClick}>{symbol}</OrderingButtonWrapper>;
 };

@@ -4,15 +4,13 @@ import { HeadingWithLoader } from '../../common/HeadingWithLoader';
 import { PaginationControls } from '../../common/PaginationControls';
 import { Spacer, SpacerDirection } from '../../common/Spacer';
 import { BikeStation } from '../types';
-import { Table } from '../../common/Table';
+import { ColumnHeader, StyledTable, TableProps } from '../../common/Table';
 import { useState } from 'react';
 import { OrderBy } from '../../../common/types';
-import { OrderingButton } from '../../common/OrderingButton';
-import { assignFirstObjectProperty } from '../../../common/util';
 
 export const BikeStationListView = () => {
   const pageSize = 20;
-  const [orderBy, setOrderBy] = useState<OrderBy>({ name: 'ASC', address: 'ASC' });
+  const [orderBy, setOrderBy] = useState<OrderBy<BikeStation>>({ property: 'name', direction: 'ASC' });
   const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<BikeStation>({
     pageSize,
     requestPath: '/bike-stations/page',
@@ -32,11 +30,8 @@ export const BikeStationListView = () => {
     />
   );
 
-  const toggleOrdering = (property: string) => {
-    setOrderBy((ordering) => {
-      const newPropertyOrdering = ordering[property] === 'ASC' ? 'DESC' : 'ASC';
-      return assignFirstObjectProperty(ordering, property, newPropertyOrdering);
-    });
+  const orderByColumn = (orderBy: OrderBy<BikeStation>) => {
+    setOrderBy(orderBy);
   };
 
   return (
@@ -48,7 +43,7 @@ export const BikeStationListView = () => {
         <>
           {controls}
           <Spacer direction={SpacerDirection.Vertical} size={3} />
-          {hasData && <BikeStationsTable bikeStations={page?.data} orderBy={orderBy} toggleOrdering={toggleOrdering} />}
+          {hasData && <BikeStationsTable rows={page?.data} orderBy={orderBy} orderByColumn={orderByColumn} />}
           <Spacer direction={SpacerDirection.Vertical} size={3} />
           {controls}
         </>
@@ -57,35 +52,32 @@ export const BikeStationListView = () => {
   );
 };
 
-interface BikeStationsTableProps {
-  bikeStations: Array<BikeStation>;
-  orderBy: OrderBy;
-  toggleOrdering: (property: string) => void;
-}
-
-const BikeStationsTable = (props: BikeStationsTableProps) => {
-  const { bikeStations, orderBy, toggleOrdering } = props;
+const BikeStationsTable = (props: TableProps<BikeStation>) => {
+  const { rows, orderBy, orderByColumn } = props;
   return (
-    <Table>
+    <StyledTable>
       <thead>
         <tr>
-          <th>
-            Name
-            <OrderingButton direction={orderBy.name} onClick={() => toggleOrdering('name')} />
-          </th>
-          <th>
-            Address
-            <OrderingButton direction={orderBy.address} onClick={() => toggleOrdering('address')} />
-          </th>
-          <th>
-            Capacity
-            <OrderingButton direction={orderBy.capacity} onClick={() => toggleOrdering('capacity')} />
-          </th>
-          <th>Operator</th>
+          <ColumnHeader<BikeStation>
+            label="Name"
+            orderable={{ property: 'name', currentOrdering: orderBy, orderByColumn }}
+          />
+          <ColumnHeader<BikeStation>
+            label="Address"
+            orderable={{ property: 'address', currentOrdering: orderBy, orderByColumn }}
+          />
+          <ColumnHeader<BikeStation>
+            label="Capacity"
+            orderable={{ property: 'capacity', currentOrdering: orderBy, orderByColumn }}
+          />
+          <ColumnHeader<BikeStation>
+            label="Operator"
+            orderable={{ property: 'operator', currentOrdering: orderBy, orderByColumn }}
+          />
         </tr>
       </thead>
       <tbody>
-        {bikeStations.map((bikeStation) => (
+        {rows.map((bikeStation) => (
           <tr key={bikeStation.id}>
             <td>
               <Link to={`/bike-stations/${bikeStation.id}`}>{bikeStation.name}</Link>
@@ -98,6 +90,6 @@ const BikeStationsTable = (props: BikeStationsTableProps) => {
           </tr>
         ))}
       </tbody>
-    </Table>
+    </StyledTable>
   );
 };

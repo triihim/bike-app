@@ -3,21 +3,15 @@ import { usePage } from '../../common/hooks/usePage';
 import { PaginationControls } from '../common/PaginationControls';
 import { Spacer, SpacerDirection } from '../common/Spacer';
 import { HeadingWithLoader } from '../common/HeadingWithLoader';
-import { assignFirstObjectProperty, metersToKilometers, secondsToMinutes } from '../../common/util';
-import { Table } from '../common/Table';
+import { metersToKilometers, secondsToMinutes } from '../../common/util';
+import { ColumnHeader, StyledTable, TableProps } from '../common/Table';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { OrderBy } from '../../common/types';
-import { OrderingButton } from '../common/OrderingButton';
 
 export const JourneyListView = () => {
   const pageSize = 20;
-  const [orderBy, setOrderBy] = useState<OrderBy>({
-    departureStationName: 'ASC',
-    returnStationName: 'ASC',
-    coveredDistanceInMeters: 'DESC',
-    durationInSeconds: 'DESC',
-  });
+  const [orderBy, setOrderBy] = useState<OrderBy<Journey>>({ property: 'departureStationName', direction: 'ASC' });
 
   const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<Journey>({
     pageSize,
@@ -38,11 +32,8 @@ export const JourneyListView = () => {
     />
   );
 
-  const toggleOrdering = (property: string) => {
-    setOrderBy((ordering) => {
-      const newPropertyOrdering = ordering[property] === 'ASC' ? 'DESC' : 'ASC';
-      return assignFirstObjectProperty(ordering, property, newPropertyOrdering);
-    });
+  const orderByColumn = (orderBy: OrderBy<Journey>) => {
+    setOrderBy(orderBy);
   };
 
   return (
@@ -54,7 +45,7 @@ export const JourneyListView = () => {
         <>
           {controls}
           <Spacer direction={SpacerDirection.Vertical} size={3} />
-          {hasData && <JourneyTable journeys={page?.data} orderBy={orderBy} toggleOrdering={toggleOrdering} />}
+          {hasData && <JourneyTable rows={page?.data} orderBy={orderBy} orderByColumn={orderByColumn} />}
           <Spacer direction={SpacerDirection.Vertical} size={3} />
           {controls}
         </>
@@ -63,44 +54,32 @@ export const JourneyListView = () => {
   );
 };
 
-interface JourneyTableProps {
-  journeys: Array<Journey>;
-  orderBy: OrderBy;
-  toggleOrdering: (property: string) => void;
-}
-
-const JourneyTable = (props: JourneyTableProps) => {
-  const { journeys, orderBy, toggleOrdering } = props;
+const JourneyTable = (props: TableProps<Journey>) => {
+  const { rows, orderBy, orderByColumn } = props;
   return (
-    <Table>
+    <StyledTable>
       <thead>
         <tr>
-          <th>
-            Departure station
-            <OrderingButton
-              direction={orderBy.departureStationName}
-              onClick={() => toggleOrdering('departureStationName')}
-            />
-          </th>
-          <th>
-            Return station
-            <OrderingButton direction={orderBy.returnStationName} onClick={() => toggleOrdering('returnStationName')} />
-          </th>
-          <th>
-            Distance (km)
-            <OrderingButton
-              direction={orderBy.coveredDistanceInMeters}
-              onClick={() => toggleOrdering('coveredDistanceInMeters')}
-            />
-          </th>
-          <th>
-            Duration (min)
-            <OrderingButton direction={orderBy.durationInSeconds} onClick={() => toggleOrdering('durationInSeconds')} />
-          </th>
+          <ColumnHeader<Journey>
+            label="Departure station"
+            orderable={{ property: 'departureStationName', currentOrdering: orderBy, orderByColumn }}
+          />
+          <ColumnHeader<Journey>
+            label="Return station"
+            orderable={{ property: 'returnStationName', currentOrdering: orderBy, orderByColumn }}
+          />
+          <ColumnHeader<Journey>
+            label="Distance (km)"
+            orderable={{ property: 'coveredDistanceInMeters', currentOrdering: orderBy, orderByColumn }}
+          />
+          <ColumnHeader<Journey>
+            label="Duration (min)"
+            orderable={{ property: 'durationInSeconds', currentOrdering: orderBy, orderByColumn }}
+          />
         </tr>
       </thead>
       <tbody>
-        {journeys.map((journey) => (
+        {rows.map((journey) => (
           <tr key={journey.id}>
             <td>
               <Link to={`/bike-stations/${journey.departureStationId}`}>{journey.departureStationName}</Link>
@@ -113,6 +92,6 @@ const JourneyTable = (props: JourneyTableProps) => {
           </tr>
         ))}
       </tbody>
-    </Table>
+    </StyledTable>
   );
 };
