@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { OrderBy } from '../../common/types';
+import { FilterBy, OrderBy } from '../../common/types';
 import { OrderingButton } from './OrderingButton';
+import { DebouncedInput } from './DebouncedInput';
 
 export const StyledTable = styled.table`
   border-collapse: collapse;
@@ -19,29 +20,39 @@ export const StyledTable = styled.table`
 `;
 
 export interface TableProps<T> {
-  rows: Array<T>;
+  rows?: Array<T>;
   orderBy: OrderBy<T>;
   orderByColumn: (orderBy: OrderBy<T>) => void;
+  filterByValue: (filterBy: FilterBy<T>) => void;
 }
 
 export interface ColumnHeaderProps<T> {
   label: string;
-  orderable?: { property: keyof T; currentOrdering: OrderBy<T>; orderByColumn: (orderBy: OrderBy<T>) => void };
+  property: keyof T;
+  orderable?: { currentOrdering: OrderBy<T>; orderByColumn: (orderBy: OrderBy<T>) => void };
+  filterByValue?: (filterBy: FilterBy<T>) => void;
 }
 
-export const ColumnHeader = <T,>({ label, orderable }: ColumnHeaderProps<T>) => {
+export const ColumnHeader = <T,>({ label, property, orderable, filterByValue }: ColumnHeaderProps<T>) => {
   if (orderable) {
-    const { property, currentOrdering } = orderable;
+    const { currentOrdering } = orderable;
     const columnOrdering = currentOrdering.property === property ? currentOrdering.direction : undefined;
     return (
       <StyledColumnHeader>
-        <span>{label}</span>
-        <OrderingButton
-          direction={columnOrdering}
-          onClick={() =>
-            orderable.orderByColumn({ property, direction: currentOrdering.direction === 'ASC' ? 'DESC' : 'ASC' })
-          }
-        />
+        <div>
+          <span>{label}</span>
+          <OrderingButton
+            direction={columnOrdering}
+            onClick={() =>
+              orderable.orderByColumn({ property, direction: currentOrdering.direction === 'ASC' ? 'DESC' : 'ASC' })
+            }
+          />
+        </div>
+        {filterByValue && (
+          <div className="filter">
+            <DebouncedInput onChange={(value) => filterByValue({ property, value })} />
+          </div>
+        )}
       </StyledColumnHeader>
     );
   } else {
@@ -54,8 +65,18 @@ export const ColumnHeader = <T,>({ label, orderable }: ColumnHeaderProps<T>) => 
 };
 
 const StyledColumnHeader = styled.th`
+  vertical-align: top;
+
   & div:nth-child(2) {
     position: relative;
     top: 5px;
+  }
+
+  & .filter {
+    margin: 0.25rem 0;
+  }
+
+  & .filter input {
+    padding: 0.25rem;
   }
 `;

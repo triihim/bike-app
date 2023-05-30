@@ -7,19 +7,19 @@ import { metersToKilometers, secondsToMinutes } from '../../common/util';
 import { ColumnHeader, StyledTable, TableProps } from '../common/Table';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { OrderBy } from '../../common/types';
+import { FilterBy, OrderBy } from '../../common/types';
 
 export const JourneyListView = () => {
   const pageSize = 20;
   const [orderBy, setOrderBy] = useState<OrderBy<Journey>>({ property: 'departureStationName', direction: 'ASC' });
+  const [filters, setFilters] = useState<Array<FilterBy<Journey>>>([]);
 
   const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<Journey>({
     pageSize,
     requestPath: '/journeys/page',
     orderBy,
+    filterBy: filters,
   });
-
-  const hasData = page !== null && page.count > 0;
 
   const controls = (
     <PaginationControls
@@ -36,50 +36,56 @@ export const JourneyListView = () => {
     setOrderBy(orderBy);
   };
 
+  const filterByValue = (filterBy: FilterBy<Journey>) => {
+    setFilters((currentFilters) =>
+      currentFilters.filter((filter) => filter.property !== filterBy.property).concat(filterBy),
+    );
+  };
+
   return (
     <div>
       <HeadingWithLoader label="Journeys" loading={loading} />
-      {!hasData && !loading ? (
-        <p>No journeys available</p>
-      ) : (
-        <>
-          {controls}
-          <Spacer direction={SpacerDirection.Vertical} size={3} />
-          {hasData && <JourneyTable rows={page?.data} orderBy={orderBy} orderByColumn={orderByColumn} />}
-          <Spacer direction={SpacerDirection.Vertical} size={3} />
-          {controls}
-        </>
-      )}
+      {controls}
+      <Spacer direction={SpacerDirection.Vertical} size={3} />
+      <JourneyTable rows={page?.data} orderBy={orderBy} orderByColumn={orderByColumn} filterByValue={filterByValue} />
+      <Spacer direction={SpacerDirection.Vertical} size={3} />
+      {controls}
     </div>
   );
 };
 
 const JourneyTable = (props: TableProps<Journey>) => {
-  const { rows, orderBy, orderByColumn } = props;
+  const { rows, orderBy, orderByColumn, filterByValue } = props;
   return (
     <StyledTable>
       <thead>
         <tr>
           <ColumnHeader<Journey>
             label="Departure station"
-            orderable={{ property: 'departureStationName', currentOrdering: orderBy, orderByColumn }}
+            property="departureStationName"
+            orderable={{ currentOrdering: orderBy, orderByColumn }}
+            filterByValue={filterByValue}
           />
           <ColumnHeader<Journey>
             label="Return station"
-            orderable={{ property: 'returnStationName', currentOrdering: orderBy, orderByColumn }}
+            property="returnStationName"
+            orderable={{ currentOrdering: orderBy, orderByColumn }}
+            filterByValue={filterByValue}
           />
           <ColumnHeader<Journey>
             label="Distance (km)"
-            orderable={{ property: 'coveredDistanceInMeters', currentOrdering: orderBy, orderByColumn }}
+            property="coveredDistanceInMeters"
+            orderable={{ currentOrdering: orderBy, orderByColumn }}
           />
           <ColumnHeader<Journey>
             label="Duration (min)"
-            orderable={{ property: 'durationInSeconds', currentOrdering: orderBy, orderByColumn }}
+            property="durationInSeconds"
+            orderable={{ currentOrdering: orderBy, orderByColumn }}
           />
         </tr>
       </thead>
       <tbody>
-        {rows.map((journey) => (
+        {rows?.map((journey) => (
           <tr key={journey.id}>
             <td>
               <Link to={`/bike-stations/${journey.departureStationId}`}>{journey.departureStationName}</Link>

@@ -6,18 +6,19 @@ import { Spacer, SpacerDirection } from '../../common/Spacer';
 import { BikeStation } from '../types';
 import { ColumnHeader, StyledTable, TableProps } from '../../common/Table';
 import { useState } from 'react';
-import { OrderBy } from '../../../common/types';
+import { FilterBy, OrderBy } from '../../../common/types';
 
 export const BikeStationListView = () => {
   const pageSize = 20;
   const [orderBy, setOrderBy] = useState<OrderBy<BikeStation>>({ property: 'name', direction: 'ASC' });
+  const [filters, setFilters] = useState<Array<FilterBy<BikeStation>>>([]);
+
   const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<BikeStation>({
     pageSize,
     requestPath: '/bike-stations/page',
     orderBy,
+    filterBy: filters,
   });
-
-  const hasData = page !== null && page.count > 0;
 
   const controls = (
     <PaginationControls
@@ -34,50 +35,63 @@ export const BikeStationListView = () => {
     setOrderBy(orderBy);
   };
 
+  const filterByValue = (filterBy: FilterBy<BikeStation>) => {
+    setFilters((currentFilters) =>
+      currentFilters.filter((filter) => filter.property !== filterBy.property).concat(filterBy),
+    );
+  };
+
   return (
     <div>
       <HeadingWithLoader label="Bike Stations" loading={loading} />
-      {!hasData && !loading ? (
-        <p>No bike stations available</p>
-      ) : (
-        <>
-          {controls}
-          <Spacer direction={SpacerDirection.Vertical} size={3} />
-          {hasData && <BikeStationsTable rows={page?.data} orderBy={orderBy} orderByColumn={orderByColumn} />}
-          <Spacer direction={SpacerDirection.Vertical} size={3} />
-          {controls}
-        </>
-      )}
+      <>
+        {controls}
+        <Spacer direction={SpacerDirection.Vertical} size={3} />
+        <BikeStationsTable
+          rows={page?.data}
+          orderBy={orderBy}
+          orderByColumn={orderByColumn}
+          filterByValue={filterByValue}
+        />
+        <Spacer direction={SpacerDirection.Vertical} size={3} />
+        {controls}
+      </>
     </div>
   );
 };
 
 const BikeStationsTable = (props: TableProps<BikeStation>) => {
-  const { rows, orderBy, orderByColumn } = props;
+  const { rows, orderBy, orderByColumn, filterByValue } = props;
   return (
     <StyledTable>
       <thead>
         <tr>
           <ColumnHeader<BikeStation>
             label="Name"
-            orderable={{ property: 'name', currentOrdering: orderBy, orderByColumn }}
+            property="name"
+            orderable={{ currentOrdering: orderBy, orderByColumn }}
+            filterByValue={filterByValue}
           />
           <ColumnHeader<BikeStation>
             label="Address"
-            orderable={{ property: 'address', currentOrdering: orderBy, orderByColumn }}
+            property="address"
+            orderable={{ currentOrdering: orderBy, orderByColumn }}
+            filterByValue={filterByValue}
           />
           <ColumnHeader<BikeStation>
             label="Capacity"
-            orderable={{ property: 'capacity', currentOrdering: orderBy, orderByColumn }}
+            property="capacity"
+            orderable={{ currentOrdering: orderBy, orderByColumn }}
           />
           <ColumnHeader<BikeStation>
             label="Operator"
-            orderable={{ property: 'operator', currentOrdering: orderBy, orderByColumn }}
+            property="operator"
+            orderable={{ currentOrdering: orderBy, orderByColumn }}
           />
         </tr>
       </thead>
       <tbody>
-        {rows.map((bikeStation) => (
+        {rows?.map((bikeStation) => (
           <tr key={bikeStation.id}>
             <td>
               <Link to={`/bike-stations/${bikeStation.id}`}>{bikeStation.name}</Link>
