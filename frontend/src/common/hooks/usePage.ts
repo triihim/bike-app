@@ -17,7 +17,7 @@ export const usePage = <T>({ pageSize, requestPath, initialPage, orderBy }: useP
   useEffect(() => {
     if (page && page.count) {
       setHasMore(start + pageSize < page.count);
-      setTotalPageCount(Math.ceil(page.count / pageSize) - 1);
+      setTotalPageCount(Math.ceil(page.count / pageSize));
     }
   }, [page]);
 
