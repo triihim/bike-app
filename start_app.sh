@@ -4,4 +4,5 @@ npm run dev:container:rebuild -- -d
 
 # Start frontend
 cd "../frontend"
+npm install
 npm start
