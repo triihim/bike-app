@@ -52,14 +52,38 @@ npm run dev:container:shutdown
 
 Frontend is shutdown by closing the terminal it runs in, or by stopping the process with CTRL-C.
 
+### Useful backend scripts
+
+| Script                 | Description                                                                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| dev:container:rebuild  | Rebuilds the backend, but does not clean the database. Run this after making changes to the backend code                       |
+| dev:container          | Starts the backend (db and server) in a container without rebuilding                                                           |
+| dev:container:shutdown | Shuts down the container started by the above scripts                                                                          |
+| dev:server             | Runs the server with [ts-node](https://www.npmjs.com/package/ts-node) instead of a container, use this for faster development  |
+| dev:db                 | Starts only the database in a container, run this before the above _dev:server_ if you want to still have a database available |
+| dev:db:clean           | Shuts down the backend and cleans all data from the database                                                                   |
+
 ### Troubleshooting
 
 - If any part of the app fails to start, check that nothing else is using the following ports:
+
   - **8000** (server uses this port)
   - **5432** (database uses this port, exposed outside of docker so that server can access it even if ran outside container)
   - **3000** (react scripts serve frontend on this port)
 
+- If no data is shown in the client on first startup, it may be due to the data import still running on the server side. Data importing can take time, give it a few minutes and refresh the page.
+
 ---
+
+## Running the tests
+
+Currently, there are only a limited number of tests in the backend at [./backend/test/](./backend/test/), which test csv parsing.
+
+```bash
+# To run the tests
+cd ./backend
+npm run test
+```
 
 ## Data importing
 
@@ -87,6 +111,18 @@ If the data import feels slow, one can test changing the following environment v
 1. DATA_IMPORT_BUFFER_SIZE
 2. DISABLE_LOGGING_DURING_DATA_IMPORT
 
+There is mock data in the csv folders [/backend/data/bike_stations](/backend/data/bike_stations) and [/backend/data/bike_stations](/backend/data/bike_stations), which can be removed if real world data is used. Real data is available from the following urls:
+
+Journey csv files
+
+1. https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv
+2. https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv
+3. https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
+
+Bike station csv file
+
+1. https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv
+
 ---
 
 ## Known bugs, limitations and other TODOs
@@ -102,7 +138,7 @@ Due to discovering this pre-assignment only a few days before the deadline, ther
 | TODO | Both journey list and bike station lists have a lot in common. Probably room for refactoring the common parts into shared compoents                     |
 | TODO | Mobile friendly UI. At the moment the UI does not scale, especially the tables                                                                          |
 | TODO | Own README files for backend and frontend                                                                                                               |
-| TODO | Caching. Currently, especially filtering sends a lot of requests to the backend despite debouncing. Data is anyway quite stable                         |
+| TODO | Caching. Currently, especially filtering sends a lot of requests to the backend despite debouncing. Data is anyway quite stable and hence cacheable     |
 | TODO | Journey addition endpoint and corresponding UI                                                                                                          |
 | TODO | Bike station addition endpoint and corresponding UI                                                                                                     |
 | TODO | Document npm scripts to this readme or to frontend/backend specific readme                                                                              |
