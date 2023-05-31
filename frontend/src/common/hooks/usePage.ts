@@ -26,7 +26,7 @@ export const usePage = <T>({ pageSize, requestPath, initialPage, orderBy, filter
   const [start, setStart] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [pageIndex, setPageIndex] = useState(initialPage || 1);
-  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [totalPageCount, setTotalPageCount] = useState(1);
   const [request, setRequest] = useState(`${requestPath}?start=${start}&limit=${pageSize}`);
   const filteringChanged = useRef(false);
   const { loading, data: page, error } = useGetRequest<PageResponse<T>>(request);
@@ -50,7 +50,7 @@ export const usePage = <T>({ pageSize, requestPath, initialPage, orderBy, filter
   useEffect(() => {
     if (page && page.count) {
       setHasMore(start + pageSize < page.count);
-      setTotalPageCount(Math.ceil(page.count / pageSize));
+      setTotalPageCount(Math.max(1, Math.ceil(page.count / pageSize)));
     }
   }, [page]);
 
