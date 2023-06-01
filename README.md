@@ -34,6 +34,7 @@ With the above requirements installed and from the root of the this repository r
 ```bash
  # Starting the frontend
  cd ./frontend
+ npm install # required before running for the first time
  npm start
 ```
 
