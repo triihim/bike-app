@@ -11,6 +11,12 @@ export const appTheme = {
     textDark: '#35393C',
     textDarkVariant: '#4f4f4f',
     divider: '#35393C',
+    errorText: '#fad7d8',
+    errorBackground: '#cf191e',
+    infoText: '#e3f1f9',
+    infoBackground: '#61adde',
+    successText: '#daf7e3',
+    successBackground: '#2ed15e',
   },
 };
 

@@ -7,6 +7,7 @@ import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { BikeStationListPage } from './components/bike_stations/list/BikeStationListPage';
 import { JourneyListPage } from './components/journeys/JourneyListPage';
 import { BikeStationDetailPage } from './components/bike_stations/detail/BikeStationDetailPage';
+import { NotificationProvider } from './components/Notification';
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,9 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={appTheme}>
       <GlobalStyles />
-      <RouterProvider router={router} />
+      <NotificationProvider>
+        <RouterProvider router={router} />
+      </NotificationProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );
