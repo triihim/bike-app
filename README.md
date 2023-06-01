@@ -12,10 +12,10 @@ The frontend of the web application is developed using React.js.
 
 ## Branches
 
-| Branch      | Description                                                                                                                                |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| main        | Working version of the app                                                                                                                 |
-| development | Newest features which I continued to add after the pre-assignment submission. Should also work but not as thoroughly tested as main-branch |
+| Branch                                                              | Description                                                                                                                                |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| [main](https://github.com/triihim/bike-app/tree/main)               | Working version of the app                                                                                                                 |
+| [development](https://github.com/triihim/bike-app/tree/development) | Newest features which I continued to add after the pre-assignment submission. Should also work but not as thoroughly tested as main-branch |
 
 ---
 
