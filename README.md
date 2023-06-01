@@ -143,7 +143,7 @@ Due to discovering this pre-assignment only a few days before the deadline, ther
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | TODO | Ability to filter statistics calculations per month                                                                                                     |
 | TODO | Tests to avoid regression when refactoring and adding new features &rarr; more confidence and speed in developing features                              |
-| TODO | UI Error notifications. Idea: notification context that would allow displaying errors from anywhere in the app uniformly on top of the UI               |
+| DONE | ~~UI Error notifications. Idea: notification context that would allow displaying errors from anywhere in the app uniformly on top of the UI~~           |
 | TODO | UI path mapping to pagination and filtering. Currently one cannot go to a certain list page through URL. E.g. bookmarking certain listing does not work |
 | TODO | Both journey list and bike station lists have a lot in common. Probably room for refactoring the common parts into shared compoents                     |
 | TODO | Mobile friendly UI. At the moment the UI does not scale, especially the tables                                                                          |
