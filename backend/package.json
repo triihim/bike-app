@@ -15,6 +15,9 @@
     "build:rebuild": "npm run build:clean && npm run build",
     "tsc": "tsc",
     "test": "jest",
+    "test:withdb": "npm run test:db -- -d && npm run test",
+    "test:db": "docker compose --file ./docker-compose.test.yml --env-file ./environments/test.env up db",
+    "test:db:clean": "docker compose --file ./docker-compose.test.yml --env-file ./environments/test.env down -v",
     "lint": "eslint .",
     "format": "prettier --ignore-unknown --write ."
   },
