@@ -34,9 +34,11 @@ export class Server {
   }
 
   shutdown() {
-    return new Promise<void>((resolve) =>
+    return new Promise<void>((resolve, reject) =>
       this._server.close(() => {
-        AppDataSource.destroy().then(() => resolve());
+        return AppDataSource.destroy()
+          .then(() => resolve())
+          .catch(() => reject());
       }),
     );
   }

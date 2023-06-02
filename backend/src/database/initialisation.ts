@@ -97,7 +97,9 @@ export const initialiseJourneyData = async (csvRootFolderPath: string) => {
 };
 
 export const initialiseDatabase = async (csvRootFolderPath: string) => {
-  await AppDataSource.initialize();
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
 
   const bikeStationsInitialised = (await AppDataSource.getRepository(BikeStation).find({ take: 1 })).length === 1;
   const journeysInitialised = (await AppDataSource.getRepository(Journey).find({ take: 1 })).length === 1;
