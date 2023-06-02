@@ -11,8 +11,3 @@ services:
       - POSTGRES_DB=${DB_NAME}
     ports:
       - ${DB_PORT}:${DB_PORT_CONTAINER}
-    volumes:
-      - db_test_data:/var/lib/postgresql/data
-
-volumes:
-  db_test_data:
