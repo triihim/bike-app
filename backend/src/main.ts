@@ -6,7 +6,7 @@ const main = async () => {
   try {
     const csvRootFolderPath = path.resolve(__dirname, '../data');
     const server = new Server({ csvRootFolderPath });
-    server.start();
+    await server.start();
   } catch (error) {
     console.error('Server initialisation failed', error);
     await AppDataSource.destroy();

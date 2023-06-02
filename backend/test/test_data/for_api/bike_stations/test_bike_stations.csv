@@ -1,0 +1,11 @@
+FID,ID,Nimi,Namn,Name,Osoite,Adress,Kaupunki,Stad,Operaattor,Kapasiteet,x,y
+1000,1000,Test Station 1,Test Station 1,Test Station 1,Test Address 1,Test Address 1,Helsinki,Helsinki,Test Operator 1,15,24.987654,60.123456
+1001,1001,Test Station 2,Test Station 2,Test Station 2,Test Address 2,Test Address 2,Helsinki,Helsinki,Test Operator 2,18,24.987655,60.123457
+1002,1002,Test Station 3,Test Station 3,Test Station 3,Test Address 3,Test Address 3,Helsinki,Helsinki,Test Operator 3,12,24.987656,60.123458
+1003,1003,Test Station 4,Test Station 4,Test Station 4,Test Address 4,Test Address 4,Helsinki,Helsinki,Test Operator 4,20,24.987657,60.123459
+1004,1004,Test Station 5,Test Station 5,Test Station 5,Test Address 5,Test Address 5,Helsinki,Helsinki,Test Operator 5,25,24.987658,60.123460
+1005,1005,Test Station 6,Test Station 6,Test Station 6,Test Address 6,Test Address 6,Helsinki,Helsinki,Test Operator 6,16,24.987659,60.123461
+1006,1006,Test Station 7,Test Station 7,Test Station 7,Test Address 7,Test Address 7,Helsinki,Helsinki,Test Operator 7,14,24.987660,60.123462
+1007,1007,Test Station 8,Test Station 8,Test Station 8,Test Address 8,Test Address 8,Helsinki,Helsinki,Test Operator 8,22,24.987661,60.123463
+1008,1008,Test Station 9,Test Station 9,Test Station 9,Test Address 9,Test Address 9,Helsinki,Helsinki,Test Operator 9,19,24.987662,60.123464
+1009,1009,Test Station 10,Test Station 10,Test Station 10,Test Address 10,Test Address 10,Helsinki,Helsinki,Test Operator 10,21,24.987663,60.123465

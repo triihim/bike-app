@@ -2,12 +2,12 @@ import supertest from 'supertest';
 import { Server } from '../../src/server/server';
 import AppConfig from '../../src/config';
 import path from 'path';
-import { BikeStation } from '../../src/bike_stations/BikeStation.entity';
+import { Journey } from '../../src/journeys/Journey.entity';
 import { isCorrectlySorted } from '../util';
 
-describe('Bike station API', () => {
+describe('Journeys API', () => {
   const server = new Server({ csvRootFolderPath: path.resolve(__dirname, '../test_data/for_api') });
-  const apiPath = '/bike-stations';
+  const apiPath = '/journeys';
 
   beforeAll(async () => {
     await server.start();
@@ -35,11 +35,15 @@ describe('Bike station API', () => {
   });
 
   describe('sorts', () => {
-    test.each<{ columnName: keyof BikeStation; direction: 'ASC' | 'DESC' }>([
-      { columnName: 'name', direction: 'ASC' },
-      { columnName: 'name', direction: 'DESC' },
-      { columnName: 'address', direction: 'ASC' },
-      { columnName: 'address', direction: 'DESC' },
+    test.each<{ columnName: keyof Journey; direction: 'ASC' | 'DESC' }>([
+      { columnName: 'departureStationName', direction: 'ASC' },
+      { columnName: 'departureStationName', direction: 'DESC' },
+      { columnName: 'returnStationName', direction: 'ASC' },
+      { columnName: 'returnStationName', direction: 'DESC' },
+      { columnName: 'durationInSeconds', direction: 'ASC' },
+      { columnName: 'durationInSeconds', direction: 'DESC' },
+      { columnName: 'coveredDistanceInMeters', direction: 'DESC' },
+      { columnName: 'coveredDistanceInMeters', direction: 'ASC' },
       { columnName: 'id', direction: 'ASC' },
       { columnName: 'id', direction: 'DESC' },
     ])('$columnName properly in $direction direction', async ({ columnName, direction }) => {
@@ -49,18 +53,15 @@ describe('Bike station API', () => {
         .get(`${apiPath}/page?start=${pageStart}&limit=${pageSize}&sortColumn=${columnName}&sortDirection=${direction}`)
         .expect(200)
         .then((response) => {
-          expect(isCorrectlySorted<BikeStation>(response.body.data, columnName as keyof BikeStation, direction)).toBe(
-            true,
-          );
+          expect(isCorrectlySorted<Journey>(response.body.data, columnName as keyof Journey, direction)).toBe(true);
         });
     });
   });
 
   describe('filters', () => {
-    test.each<{ columnName: keyof BikeStation; filter: string | number; count: number }>([
-      { columnName: 'name', filter: 'Test Station 5', count: 1 },
-      { columnName: 'address', filter: 'Test Address 5', count: 1 },
-      // { columnName: 'id', filter: '1005' }, This does not pass currently, since id is a number and cannot be used in TypeORM 'like'-query. Enable test once fixed (not used in the UI at the moment)
+    test.each<{ columnName: keyof Journey; filter: string | number; count: number }>([
+      { columnName: 'departureStationName', filter: 'Test Station 5', count: 1 },
+      { columnName: 'returnStationName', filter: 'Test Station 10', count: 2 },
     ])('$columnName properly', async ({ columnName, filter, count }) => {
       const pageStart = 0;
       const pageSize = 10;
@@ -69,7 +70,7 @@ describe('Bike station API', () => {
         .expect(200)
         .then((response) => {
           expect(response.body.data.length).toBe(count);
-          expect((response.body.data[0] as BikeStation)[columnName]).toEqual(filter);
+          expect((response.body.data[0] as Journey)[columnName]).toEqual(filter);
         });
     });
   });
