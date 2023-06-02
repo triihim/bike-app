@@ -1,4 +1,4 @@
-import { ILike, QueryRunner, Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import { BikeStation } from './BikeStation.entity';
 import { AppDataSource } from '../database/dataSource';
 import { NextFunction, Response } from 'express';

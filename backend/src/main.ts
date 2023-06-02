@@ -1,17 +1,16 @@
-import { initialiseDatabase } from './database/initialisation';
 import { AppDataSource } from './database/dataSource';
-import { startServer } from './server/server';
+import { Server } from './server/server';
+import path from 'path';
 
 const main = async () => {
   try {
-    await initialiseDatabase();
+    const csvRootFolderPath = path.resolve(__dirname, '../data');
+    const server = new Server({ csvRootFolderPath });
+    server.start();
   } catch (error) {
-    console.error('Database initialisation failed', error);
+    console.error('Server initialisation failed', error);
     await AppDataSource.destroy();
-    process.exit(1);
   }
-
-  startServer();
 };
 
 main();

@@ -1,8 +1,8 @@
 import { tryParseBool, tryParseInt, tryParseNonEmptyString } from './util';
 
 class AppConfig {
-  get ENV() {
-    return tryParseNonEmptyString(process.env.ENV, 'Parsing process.env.ENV');
+  get NODE_ENV() {
+    return tryParseNonEmptyString(process.env.NODE_ENV, 'Parsing process.env.ENV');
   }
 
   get DB_NAME() {

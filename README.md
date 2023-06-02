@@ -12,10 +12,10 @@ The frontend of the web application is developed using React.js.
 
 ## Branches
 
-| Branch      | Description                                                                                                                                |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| main        | Working version of the app                                                                                                                 |
-| development | Newest features which I continued to add after the pre-assignment submission. Should also work but not as thoroughly tested as main-branch |
+| Branch                                                              | Description                                                                                                                                |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| [main](https://github.com/triihim/bike-app/tree/main)               | Working version of the app                                                                                                                 |
+| [development](https://github.com/triihim/bike-app/tree/development) | Newest features which I continued to add after the pre-assignment submission. Should also work but not as thoroughly tested as main-branch |
 
 ---
 
@@ -87,12 +87,12 @@ Frontend is shutdown by closing the terminal it runs in, or by stopping the proc
 
 ## Running the tests
 
-Currently, there are only a limited number of tests in the backend at [./backend/test/](./backend/test/), which test csv parsing.
+Currently, there is only a limited number of tests in the backend at [./backend/test/](./backend/test/)
 
 ```bash
 # To run the tests
 cd ./backend
-npm run test
+npm run test:withdb
 ```
 
 ## Data importing
