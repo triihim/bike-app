@@ -60,7 +60,8 @@ describe('Bike station API', () => {
     test.each<{ columnName: keyof BikeStation; filter: string | number; count: number }>([
       { columnName: 'name', filter: 'Test Station 5', count: 1 },
       { columnName: 'address', filter: 'Test Address 5', count: 1 },
-      // { columnName: 'id', filter: '1005' }, This does not pass currently, since id is a number and cannot be used in TypeORM 'like'-query. Enable test once fixed (not used in the UI at the moment)
+      // { columnName: 'id', filter: '1005' }, This does not pass currently, since id is a number and cannot be used in TypeORM 'like'-query.
+      // Enable test once fixed (not used in the UI at the moment, so not critical)
     ])('$columnName properly', async ({ columnName, filter, count }) => {
       const pageStart = 0;
       const pageSize = 10;
