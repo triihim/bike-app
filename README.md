@@ -87,12 +87,12 @@ Frontend is shutdown by closing the terminal it runs in, or by stopping the proc
 
 ## Running the tests
 
-Currently, there are only a limited number of tests in the backend at [./backend/test/](./backend/test/), which test csv parsing.
+Currently, there is only a limited number of tests in the backend at [./backend/test/](./backend/test/)
 
 ```bash
 # To run the tests
 cd ./backend
-npm run test
+npm run test:withdb
 ```
 
 ## Data importing
