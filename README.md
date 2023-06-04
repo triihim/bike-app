@@ -87,11 +87,12 @@ Frontend is shutdown by closing the terminal it runs in, or by stopping the proc
 
 ## Running the tests
 
-Currently, there is only a limited number of tests in the backend at [./backend/test/](./backend/test/)
+Currently, there are tests only for the backend at [./backend/test/](./backend/test/)
 
 ```bash
 # To run the tests
 cd ./backend
+npm install # required before running for the first time
 npm run test:withdb
 ```
 
