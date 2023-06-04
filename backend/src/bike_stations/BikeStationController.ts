@@ -2,7 +2,7 @@ import { QueryRunner, Repository } from 'typeorm';
 import { BikeStation } from './BikeStation.entity';
 import { AppDataSource } from '../database/dataSource';
 import { NextFunction, Response } from 'express';
-import { BikeStationStatistics, NumberIdRequest, PageRequest } from '../types';
+import { BikeStationAggregates, BikeStationStatistics, NumberIdRequest, PageRequest } from '../types';
 import { ApiError } from '../errors';
 import {
   bikeStationStatisticsQuery,
@@ -87,7 +87,11 @@ class BikeStationController {
   private fetchBikeStationAggregates = async (bikeStationId: number) => {
     const resultRows: Array<unknown> = await this.queryRunner.query(bikeStationStatisticsQuery, [bikeStationId]);
     if (resultRows.length === 1 && isBikeStationAggregates(resultRows[0])) {
-      return resultRows[0];
+      // TypeORM returns queryRunner results as string, hence, conversion to numeric value is needed.
+      return Object.entries(resultRows[0]).reduce(
+        (aggregates, [property, value]) => ({ ...aggregates, [property]: +value }),
+        {},
+      ) as BikeStationAggregates;
     } else {
       throw ApiError.notFound(`Could not find statistics for bike station id: ${bikeStationId}`);
     }
@@ -96,7 +100,8 @@ class BikeStationController {
   private fetchPopularDeparturesToStatistics = async (bikeStationId: number, top: number) => {
     const resultRows: Array<unknown> = await this.queryRunner.query(popularDeparturesTo, [bikeStationId, top]);
     if (resultRows.every(isBikeStationPopularityStatistic)) {
-      return resultRows;
+      // TypeORM returns queryRunner results as string, hence, conversion to numeric value is needed.
+      return resultRows.map((row) => ({ ...row, journey_count: +row.journey_count }));
     } else {
       throw ApiError.notFound(`Could not find popular-departures-to -statistics for bike station id: ${bikeStationId}`);
     }
@@ -105,7 +110,8 @@ class BikeStationController {
   private fetchPopularReturnsFromStatistics = async (bikeStationId: number, top: number) => {
     const resultRows: Array<unknown> = await this.queryRunner.query(popularReturnsFrom, [bikeStationId, top]);
     if (resultRows.every(isBikeStationPopularityStatistic)) {
-      return resultRows;
+      // TypeORM returns queryRunner results as string, hence, conversion to numeric value is needed.
+      return resultRows.map((row) => ({ ...row, journey_count: +row.journey_count }));
     } else {
       throw ApiError.notFound(`Could not find popular-returns-from -statistics for bike station id: ${bikeStationId}`);
     }
