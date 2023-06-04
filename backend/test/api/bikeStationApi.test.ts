@@ -34,6 +34,29 @@ describe('Bike station API', () => {
     await supertest(server.instance).get(`${apiPath}/page?start=${pageStart}&limit=${pageSize}`).expect(400);
   });
 
+  it('returns valid statistics', async () => {
+    const bikeStationId = 1000;
+    const expectedJourneyStartCount = 5;
+    const expectedJourneyEndCount = 0;
+    const expectedDeparturingAvgDistanceInMeters = 1450;
+    const expectedReturningAvgDistanceInMeters = 0;
+    const expectedTopDepartures = [{ bike_station_id: 1001, bike_station_name: 'Test Station 2', journey_count: 5 }];
+
+    await supertest(server.instance)
+      .get(`${apiPath}/${bikeStationId}/statistics`)
+      .expect(200)
+      .then((response) => {
+        const { aggregates, topDeparturesTo } = response.body;
+        expect(aggregates.bike_station_id).toEqual(bikeStationId);
+        expect(aggregates.journeys_starting_from_station).toEqual(expectedJourneyStartCount);
+        expect(aggregates.journeys_returning_to_station).toEqual(expectedJourneyEndCount);
+        expect(aggregates.departuring_journeys_avg_distance_in_meters).toEqual(expectedDeparturingAvgDistanceInMeters);
+        expect(aggregates.returning_journeys_avg_distance_in_meters).toEqual(expectedReturningAvgDistanceInMeters);
+        expect(topDeparturesTo.length).toEqual(expectedTopDepartures.length);
+        expect(topDeparturesTo[0]).toEqual(expectedTopDepartures[0]);
+      });
+  });
+
   describe('sorts', () => {
     test.each<{ columnName: keyof BikeStation; direction: 'ASC' | 'DESC' }>([
       { columnName: 'name', direction: 'ASC' },
