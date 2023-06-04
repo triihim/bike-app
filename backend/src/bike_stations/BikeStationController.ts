@@ -95,7 +95,7 @@ class BikeStationController {
 
   private fetchPopularDeparturesToStatistics = async (bikeStationId: number, top: number) => {
     const resultRows: Array<unknown> = await this.queryRunner.query(popularDeparturesTo, [bikeStationId, top]);
-    if (resultRows.length > 0 && resultRows.every(isBikeStationPopularityStatistic)) {
+    if (resultRows.every(isBikeStationPopularityStatistic)) {
       return resultRows;
     } else {
       throw ApiError.notFound(`Could not find popular-departures-to -statistics for bike station id: ${bikeStationId}`);
@@ -104,7 +104,7 @@ class BikeStationController {
 
   private fetchPopularReturnsFromStatistics = async (bikeStationId: number, top: number) => {
     const resultRows: Array<unknown> = await this.queryRunner.query(popularReturnsFrom, [bikeStationId, top]);
-    if (resultRows.length > 0 && resultRows.every(isBikeStationPopularityStatistic)) {
+    if (resultRows.every(isBikeStationPopularityStatistic)) {
       return resultRows;
     } else {
       throw ApiError.notFound(`Could not find popular-returns-from -statistics for bike station id: ${bikeStationId}`);
