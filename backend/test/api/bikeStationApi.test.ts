@@ -4,12 +4,17 @@ import AppConfig from '../../src/config';
 import path from 'path';
 import { BikeStation } from '../../src/bike_stations/BikeStation.entity';
 import { isCorrectlySorted } from '../util';
+import { AppDataSource } from '../../src/database/dataSource';
 
 describe('Bike station API', () => {
   const server = new Server({ csvRootFolderPath: path.resolve(__dirname, '../test_data/for_api') });
   const apiPath = '/bike-stations';
 
   beforeAll(async () => {
+    if (AppDataSource.isInitialized) {
+      await AppDataSource.dropDatabase();
+      await AppDataSource.destroy();
+    }
     await server.start();
   });
 

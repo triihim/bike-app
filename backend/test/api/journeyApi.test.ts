@@ -4,12 +4,17 @@ import AppConfig from '../../src/config';
 import path from 'path';
 import { Journey } from '../../src/journeys/Journey.entity';
 import { isCorrectlySorted } from '../util';
+import { AppDataSource } from '../../src/database/dataSource';
 
 describe('Journeys API', () => {
   const server = new Server({ csvRootFolderPath: path.resolve(__dirname, '../test_data/for_api') });
   const apiPath = '/journeys';
 
   beforeAll(async () => {
+    if (AppDataSource.isInitialized) {
+      await AppDataSource.dropDatabase();
+      await AppDataSource.destroy();
+    }
     await server.start();
   });
 

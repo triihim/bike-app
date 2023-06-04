@@ -16,7 +16,7 @@
     "tsc": "tsc",
     "test": "jest",
     "test:debug": "jest --detectOpenHandles",
-    "test:withdb": "npm run test:db -- -d && npm run test",
+    "test:withdb": "npm run test:db -- -d && npm run test -- --runInBand",
     "test:db": "docker compose --file ./docker-compose.test.yml --env-file ./environments/test.env up db",
     "test:db:clean": "docker compose --file ./docker-compose.test.yml --env-file ./environments/test.env down -v",
     "lint": "eslint .",
