@@ -14,7 +14,7 @@ The frontend of the web application is developed using React.js.
 
 | Branch                                                              | Description                                                  | Status                                                                                                                                                                                         |
 | ------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [main](https://github.com/triihim/bike-app/tree/main)               | Working version of the app                                   | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=main)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml)        |
+| [main](https://github.com/triihim/bike-app/tree/main)               | Working version of the app                                   | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=main&event=push)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml)        |
 | [development](https://github.com/triihim/bike-app/tree/development) | Newest features, but not as thoroughly tested as main-branch | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=development)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml) |
 
 ---
