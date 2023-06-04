@@ -25,7 +25,10 @@ export const JourneyListView = () => {
 
   useEffect(() => {
     if (error) {
-      showNotification('Something went wrong and journeys could not be fetched', NotificationType.Error);
+      showNotification(
+        'Something went wrong and journeys could not be fetched, maybe the data import is still in progress',
+        NotificationType.Error,
+      );
     }
   }, [error]);
 

@@ -24,7 +24,10 @@ export const BikeStationListView = () => {
 
   useEffect(() => {
     if (error) {
-      showNotification('Something went wrong and bike stations could not be fetched', NotificationType.Error);
+      showNotification(
+        'Something went wrong and bike stations could not be fetched, maybe the data import is still in progress',
+        NotificationType.Error,
+      );
     }
   }, [error]);
 
