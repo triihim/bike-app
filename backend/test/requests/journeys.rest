@@ -8,3 +8,16 @@ GET {{URL}}/page?start=0&limit=10&sortColumn=departureStationName&sortDirection=
 
 ### Filtered page request
 GET {{URL}}/page?start=0&limit=10&filterColumn=departureStationName&filterValue=Aalto
+
+### Create new
+POST {{URL}}
+Content-Type: application/json
+
+{
+  "departureDateTime": "2023-06-04T15:05:20.942Z",
+  "returnDateTime": "2023-06-04T16:05:20.942Z",
+  "departureStationId": 1000,
+  "returnStationId": 1001,
+  "coveredDistanceInMeters": 500,
+  "durationInSeconds": 240
+}

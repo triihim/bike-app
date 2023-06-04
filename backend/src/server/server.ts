@@ -46,6 +46,7 @@ export class Server {
   private async initialise() {
     this._app = express();
     this._app.use(cors());
+    this._app.use(express.json());
     this._app.use('/bike-stations', bikeStationRouter);
     this._app.use('/journeys', journeyRouter);
     this._app.use(errorHandler);
