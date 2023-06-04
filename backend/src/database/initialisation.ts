@@ -9,8 +9,8 @@ import { getAbsoluteCsvFilepaths } from '../util';
 import { APP_DATA_SOURCE_CONFIG, AppDataSource } from './dataSource';
 import path from 'path';
 
-export const initialiseBikeStationData = async () => {
-  const bikeStationsCsvFolderPath = path.resolve(__dirname, '../../data/bike_stations');
+export const initialiseBikeStationData = async (csvRootFolderPath: string) => {
+  const bikeStationsCsvFolderPath = path.resolve(csvRootFolderPath + '/bike_stations');
   const bikeStationCsvFilepaths = await getAbsoluteCsvFilepaths(bikeStationsCsvFolderPath);
 
   const dataSource = new DataSource({
@@ -42,8 +42,8 @@ export const initialiseBikeStationData = async () => {
   return insertionCount;
 };
 
-export const initialiseJourneyData = async () => {
-  const journeysCsvFolderPath = path.resolve(__dirname, '../../data/journeys');
+export const initialiseJourneyData = async (csvRootFolderPath: string) => {
+  const journeysCsvFolderPath = path.resolve(csvRootFolderPath + '/journeys');
   const journeyCsvFilepaths = await getAbsoluteCsvFilepaths(journeysCsvFolderPath);
 
   const dataSource = new DataSource({
@@ -96,8 +96,10 @@ export const initialiseJourneyData = async () => {
   return insertionCount;
 };
 
-export const initialiseDatabase = async () => {
-  await AppDataSource.initialize();
+export const initialiseDatabase = async (csvRootFolderPath: string) => {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
 
   const bikeStationsInitialised = (await AppDataSource.getRepository(BikeStation).find({ take: 1 })).length === 1;
   const journeysInitialised = (await AppDataSource.getRepository(Journey).find({ take: 1 })).length === 1;
@@ -108,7 +110,7 @@ export const initialiseDatabase = async () => {
   if (bikeStationsInitialised) {
     console.log('Bike stations already imported');
   } else {
-    bikeStationInsertionCount = await initialiseBikeStationData();
+    bikeStationInsertionCount = await initialiseBikeStationData(csvRootFolderPath);
     console.log(`${bikeStationInsertionCount} bike stations imported successfully`);
   }
 
@@ -117,7 +119,7 @@ export const initialiseDatabase = async () => {
   } else if (bikeStationsInitialised === false && bikeStationInsertionCount === 0) {
     console.log('No bike stations exist to connect the journeys to, skipping journey insertion');
   } else {
-    journeyInsetionCount = await initialiseJourneyData();
+    journeyInsetionCount = await initialiseJourneyData(csvRootFolderPath);
     console.log(`${journeyInsetionCount} journeys imported successfully`);
   }
 };

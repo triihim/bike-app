@@ -5,5 +5,6 @@ import JourneyController from '../../journeys/JourneyController';
 const router = express.Router();
 
 router.get('/page', requirePageRequest, JourneyController.page);
+router.post('/', JourneyController.create);
 
 export default router;

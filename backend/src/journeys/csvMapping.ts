@@ -1,6 +1,7 @@
 import { MapFunction, CSVJourney } from '../types';
 import { tryParseDate, tryParseInt, tryParseNonEmptyString } from '../util';
 import { Journey } from './Journey.entity';
+import { journeyInclusionCriteria } from './journeyInclusionCriteria';
 
 export const JOURNEY_COLUMN_HEADERS = [
   'Departure',
@@ -12,11 +13,6 @@ export const JOURNEY_COLUMN_HEADERS = [
   'Covered distance (m)',
   'Duration (sec.)',
 ];
-
-const journeyInclusionCriteria = {
-  minimumDurationSeconds: 10,
-  minimumDistanceMeters: 10,
-};
 
 export const journeyMapFn: MapFunction<CSVJourney, Omit<Journey, 'id'>> = (row) => {
   try {

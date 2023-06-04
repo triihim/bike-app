@@ -6,20 +6,31 @@ import { HeadingWithLoader } from '../common/HeadingWithLoader';
 import { metersToKilometers, secondsToMinutes } from '../../common/util';
 import { ColumnHeader, StyledTable, TableProps } from '../common/Table';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FilterBy, OrderBy } from '../../common/types';
+import { NotificationContext, NotificationType } from '../Notification';
 
 export const JourneyListView = () => {
   const pageSize = 20;
   const [orderBy, setOrderBy] = useState<OrderBy<Journey>>({ property: 'departureStationName', direction: 'ASC' });
   const [filters, setFilters] = useState<Array<FilterBy<Journey>>>([]);
+  const { showNotification } = useContext(NotificationContext);
 
-  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<Journey>({
+  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount, error } = usePage<Journey>({
     pageSize,
     requestPath: '/journeys/page',
     orderBy,
     filterBy: filters,
   });
+
+  useEffect(() => {
+    if (error) {
+      showNotification(
+        'Something went wrong and journeys could not be fetched, maybe the data import is still in progress',
+        NotificationType.Error,
+      );
+    }
+  }, [error]);
 
   const controls = (
     <PaginationControls

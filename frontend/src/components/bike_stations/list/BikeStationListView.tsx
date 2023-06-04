@@ -5,20 +5,31 @@ import { PaginationControls } from '../../common/PaginationControls';
 import { Spacer, SpacerDirection } from '../../common/Spacer';
 import { BikeStation } from '../types';
 import { ColumnHeader, StyledTable, TableProps } from '../../common/Table';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FilterBy, OrderBy } from '../../../common/types';
+import { NotificationContext, NotificationType } from '../../Notification';
 
 export const BikeStationListView = () => {
   const pageSize = 20;
   const [orderBy, setOrderBy] = useState<OrderBy<BikeStation>>({ property: 'name', direction: 'ASC' });
   const [filters, setFilters] = useState<Array<FilterBy<BikeStation>>>([]);
+  const { showNotification } = useContext(NotificationContext);
 
-  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount } = usePage<BikeStation>({
+  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount, error } = usePage<BikeStation>({
     pageSize,
     requestPath: '/bike-stations/page',
     orderBy,
     filterBy: filters,
   });
+
+  useEffect(() => {
+    if (error) {
+      showNotification(
+        'Something went wrong and bike stations could not be fetched, maybe the data import is still in progress',
+        NotificationType.Error,
+      );
+    }
+  }, [error]);
 
   const controls = (
     <PaginationControls

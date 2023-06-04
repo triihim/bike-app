@@ -6,7 +6,7 @@ describe('Journey CSV parsing', () => {
   const csvParserBufferSize = 100; // This does not matter here, since testing csv's are small.
 
   it('does not discard valid rows', async () => {
-    const csvPath = path.resolve(__dirname, `../test_data/journeys/valid10.csv`);
+    const csvPath = path.resolve(__dirname, `../test_data/for_parsing/journeys/valid10.csv`);
     const parser = new CsvParser(csvPath, JOURNEY_COLUMN_HEADERS, journeyMapFn);
     await parser.parse({
       bufferSize: csvParserBufferSize,
@@ -28,7 +28,7 @@ describe('Journey CSV parsing', () => {
         { csv: 'too_short_distance.csv', journeyIs: 'too short in seconds' },
       ],
     ])('journey is $journeyIs', async ({ csv }) => {
-      const csvPath = path.resolve(__dirname, `../test_data/journeys/${csv}`);
+      const csvPath = path.resolve(__dirname, `../test_data/for_parsing/journeys/${csv}`);
       const parser = new CsvParser(csvPath, JOURNEY_COLUMN_HEADERS, journeyMapFn);
       await parser.parse({
         bufferSize: csvParserBufferSize,
