@@ -12,10 +12,10 @@ The frontend of the web application is developed using React.js.
 
 ## Branches
 
-| Branch                                                              | Description                                                  | Status                                                                                                                                                                                         |
-| ------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [main](https://github.com/triihim/bike-app/tree/main)               | Working version of the app                                   | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=main&event=push)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml)        |
-| [development](https://github.com/triihim/bike-app/tree/development) | Newest features, but not as thoroughly tested as main-branch | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=development)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml) |
+| Branch                                                              | Description                                                  | Status                                                                                                                                                                                             |
+| ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [main](https://github.com/triihim/bike-app/tree/main)               | Working version of the app                                   | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=main&event=push)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml) |
+| [development](https://github.com/triihim/bike-app/tree/development) | Newest features, but not as thoroughly tested as main-branch | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=development)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml)     |
 
 ---
 
@@ -150,7 +150,7 @@ Due to discovering this pre-assignment only a few days before the deadline, ther
 | TODO | Mobile friendly UI. At the moment the UI does not scale, especially the tables                                                                          |
 | TODO | Own README files for backend and frontend                                                                                                               |
 | TODO | Caching. Currently, especially filtering sends a lot of requests to the backend despite debouncing. Data is anyway quite stable and hence cacheable     |
-| TODO | ~~Journey addition endpoint~~ and corresponding UI                                                                                                      |
+| TODO | ~~Journey addition endpoint and corresponding UI~~                                                                                                      |
 | TODO | Bike station addition endpoint and corresponding UI                                                                                                     |
 | TODO | Document npm scripts to this readme or to frontend/backend specific readme                                                                              |
 | TODO | Remove bike station names from journey entity, id reference is enough and does not add duplicate information                                            |
