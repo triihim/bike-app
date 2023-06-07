@@ -1,6 +1,6 @@
 version: '3.9'
 
-name: bike-app-dev
+name: bike-app-prod
 
 services:
   db:
@@ -11,8 +11,6 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
-    ports:
-      - ${DB_PORT}:${DB_PORT_CONTAINER} # Needed only when server is ran outside of container.
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -22,11 +20,11 @@ services:
       - db
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
     command: npm run dev:server
     restart: unless-stopped
     ports:
-      - 8000:8000
+      - 80:80
     tty: true
     environment:
       - DB_HOST=bike-app-db
