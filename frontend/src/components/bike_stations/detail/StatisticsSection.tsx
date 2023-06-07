@@ -5,18 +5,9 @@ import { metersToKilometers } from '../../../common/util';
 import { CenteredLoader } from '../../common/Loader';
 import { Spacer, SpacerDirection } from '../../common/Spacer';
 import { BikeStationStatistics, BikeStationPopularity } from '../types';
-import { useContext, useEffect } from 'react';
-import { NotificationContext, NotificationType } from '../../Notification';
 
 export const StatisticsSection = ({ bikeStationId }: { bikeStationId: number }) => {
-  const { loading, data, error } = useGetRequest<BikeStationStatistics>(`/bike-stations/${bikeStationId}/statistics`);
-  const { showNotification } = useContext(NotificationContext);
-
-  useEffect(() => {
-    if (error) {
-      showNotification('Something went wrong and bike station statistics could not be fetched', NotificationType.Error);
-    }
-  }, [error]);
+  const { loading, data } = useGetRequest<BikeStationStatistics>(`/bike-stations/${bikeStationId}/statistics`);
 
   if (loading) return <CenteredLoader />;
 
