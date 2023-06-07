@@ -181,7 +181,7 @@ export const JourneyModal = (props: JourneyModalProps) => {
                 <InputItem size={InputSize.M}>
                   <NumberInput
                     id="distance"
-                    label="Distance (km)"
+                    label="Distance (m)"
                     min={MIN_DISTANCE_IN_METERS}
                     max={MAX_DISTANCE_IN_METERS}
                     onChange={(e) => handleNumberInput(e.target.value, (value) => setDistanceInMeters(value))}
@@ -190,7 +190,7 @@ export const JourneyModal = (props: JourneyModalProps) => {
                 <InputItem size={InputSize.M}>
                   <NumberInput
                     id="duration"
-                    label="Duration (min)"
+                    label="Duration (s)"
                     min={MIN_DURATION_IN_SECONDS}
                     max={MAX_DURATION_IN_SECONDS}
                     onChange={(e) => handleNumberInput(e.target.value, (value) => setDurationInSeconds(value))}
