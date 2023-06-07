@@ -21,7 +21,8 @@
     "test:db:clean": "docker compose --file ./docker-compose.test.yml --env-file ./environments/test.env down -v",
     "lint": "eslint .",
     "format": "prettier --ignore-unknown --write .",
-    "start": "docker compose --file ./docker-compose.prod.yml up"
+    "start": "node ./build/main.js",
+    "start:container": "docker compose --file ./docker-compose.prod.yml up"
   },
   "keywords": [],
   "author": "",
