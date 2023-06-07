@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useGetRequest } from '../../common/hooks/useGetRequest';
 import { Modal } from '../Modal';
 import { BikeStation } from '../bike_stations/types';
@@ -10,11 +10,13 @@ import { DateTimeInput } from '../common/input/DateTimeInput';
 import { NumberInput } from '../common/input/NumberInput';
 import { FormSubmitControls } from '../common/FormSubmitControls';
 import { usePostRequest } from '../../common/hooks/usePostRequest';
+import { Journey } from './types';
+import { NotificationContext, NotificationType } from '../Notification';
 
 const MIN_DISTANCE_IN_METERS = 10;
-const MAX_DISTANCE_IN_METERS = 10000;
+const MAX_DISTANCE_IN_METERS = 1000000;
 const MIN_DURATION_IN_SECONDS = 10;
-const MAX_DURATION_IN_SECONDS = 100000;
+const MAX_DURATION_IN_SECONDS = 1000000;
 
 interface JourneyModalProps {
   onCancel(): void;
@@ -22,7 +24,7 @@ interface JourneyModalProps {
 
 export const JourneyModal = (props: JourneyModalProps) => {
   const { data: bikeStations, loading } = useGetRequest<Array<BikeStation>>('/bike-stations');
-  const { post, loading: postLoading } = usePostRequest('/journeys');
+  const { post, loading: postLoading } = usePostRequest<Journey>('/journeys');
   const [departureStationId, setDepartureStationId] = useState<number | null>(null);
   const [returnStationId, setReturnStationId] = useState<number | null>(null);
   const [departureTime, setDepartureTime] = useState<Date | null>(null);
@@ -31,6 +33,7 @@ export const JourneyModal = (props: JourneyModalProps) => {
   const [durationInSeconds, setDurationInMin] = useState<number | null>(null);
   const [errors, setErrors] = useState<Array<string>>([]);
   const [isValid, setIsValid] = useState<boolean>(false);
+  const { showNotification } = useContext(NotificationContext);
 
   const allFieldsSet =
     departureStationId !== null &&
@@ -96,12 +99,22 @@ export const JourneyModal = (props: JourneyModalProps) => {
       const journey = {
         departureStationId: departureStationId,
         returnStationId: returnStationId,
-        departure: departureTime,
-        return: returnTime,
+        departureDateTime: departureTime.toUTCString(),
+        returnDateTime: returnTime.toUTCString(),
         durationInSeconds: durationInSeconds,
         coveredDistanceInMeters: distanceInMeters,
       };
-      await post(journey);
+      const result = await post(journey);
+
+      if (result?.status === 201 && result.data) {
+        showNotification(
+          `Journey from ${result.data.departureStationName} to ${result.data.returnStationName} added`,
+          NotificationType.Success,
+        );
+        props.onCancel();
+      } else {
+        showNotification('Journey addition failed', NotificationType.Error);
+      }
     }
   };
 
@@ -166,7 +179,7 @@ export const JourneyModal = (props: JourneyModalProps) => {
                 <InputItem size={InputSize.M}>
                   <NumberInput
                     id="distance"
-                    label="Distance (km)"
+                    label="Distance (m)"
                     min={MIN_DISTANCE_IN_METERS}
                     max={MAX_DISTANCE_IN_METERS}
                     onChange={(e) => handleNumberInput(e.target.value, (value) => setDistanceInKm(value))}
@@ -175,7 +188,7 @@ export const JourneyModal = (props: JourneyModalProps) => {
                 <InputItem size={InputSize.M}>
                   <NumberInput
                     id="duration"
-                    label="Duration (min)"
+                    label="Duration (s)"
                     min={MIN_DURATION_IN_SECONDS}
                     max={MAX_DURATION_IN_SECONDS}
                     onChange={(e) => handleNumberInput(e.target.value, (value) => setDurationInMin(value))}
