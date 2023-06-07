@@ -21,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.prod
-    command: npm run dev:server
+    command: npm run start
     restart: unless-stopped
     ports:
       - 80:80
