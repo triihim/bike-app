@@ -20,12 +20,13 @@ export const JourneyListView = () => {
   const { showNotification } = useContext(NotificationContext);
   const { setModalContent } = useContext(ModalContext);
 
-  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount, error } = usePage<Journey>({
-    pageSize,
-    requestPath: '/journeys/page',
-    orderBy,
-    filterBy: filters,
-  });
+  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount, error, refetch } =
+    usePage<Journey>({
+      pageSize,
+      requestPath: '/journeys/page',
+      orderBy,
+      filterBy: filters,
+    });
 
   useEffect(() => {
     if (error) {
@@ -57,8 +58,17 @@ export const JourneyListView = () => {
     );
   };
 
+  const onJourneyModalCancel = () => {
+    setModalContent(null);
+  };
+
+  const onJourneyModalSubmitted = () => {
+    setModalContent(null);
+    refetch();
+  };
+
   const onAddJourneyClick = () => {
-    setModalContent(<JourneyModal onCancel={() => setModalContent(null)} />);
+    setModalContent(<JourneyModal onCancel={onJourneyModalCancel} onSubmitted={onJourneyModalSubmitted} />);
   };
 
   return (

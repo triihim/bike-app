@@ -12,6 +12,7 @@ import { FormSubmitControls } from '../common/FormSubmitControls';
 import { usePostRequest } from '../../common/hooks/usePostRequest';
 import { Journey } from './types';
 import { NotificationContext, NotificationType } from '../Notification';
+import { InputError } from '../common/input/InputError';
 
 const MIN_DISTANCE_IN_METERS = 10;
 const MAX_DISTANCE_IN_METERS = 1000000;
@@ -20,6 +21,7 @@ const MAX_DURATION_IN_SECONDS = 1000000;
 
 interface JourneyModalProps {
   onCancel(): void;
+  onSubmitted(): void;
 }
 
 export const JourneyModal = (props: JourneyModalProps) => {
@@ -29,8 +31,8 @@ export const JourneyModal = (props: JourneyModalProps) => {
   const [returnStationId, setReturnStationId] = useState<number | null>(null);
   const [departureTime, setDepartureTime] = useState<Date | null>(null);
   const [returnTime, setReturnTime] = useState<Date | null>(null);
-  const [distanceInMeters, setDistanceInKm] = useState<number | null>(null);
-  const [durationInSeconds, setDurationInMin] = useState<number | null>(null);
+  const [distanceInMeters, setDistanceInMeters] = useState<number | null>(null);
+  const [durationInSeconds, setDurationInSeconds] = useState<number | null>(null);
   const [errors, setErrors] = useState<Array<string>>([]);
   const [isValid, setIsValid] = useState<boolean>(false);
   const { showNotification } = useContext(NotificationContext);
@@ -111,7 +113,7 @@ export const JourneyModal = (props: JourneyModalProps) => {
           `Journey from ${result.data.departureStationName} to ${result.data.returnStationName} added`,
           NotificationType.Success,
         );
-        props.onCancel();
+        props.onSubmitted();
       } else {
         showNotification('Journey addition failed', NotificationType.Error);
       }
@@ -179,24 +181,24 @@ export const JourneyModal = (props: JourneyModalProps) => {
                 <InputItem size={InputSize.M}>
                   <NumberInput
                     id="distance"
-                    label="Distance (m)"
+                    label="Distance (km)"
                     min={MIN_DISTANCE_IN_METERS}
                     max={MAX_DISTANCE_IN_METERS}
-                    onChange={(e) => handleNumberInput(e.target.value, (value) => setDistanceInKm(value))}
+                    onChange={(e) => handleNumberInput(e.target.value, (value) => setDistanceInMeters(value))}
                   />
                 </InputItem>
                 <InputItem size={InputSize.M}>
                   <NumberInput
                     id="duration"
-                    label="Duration (s)"
+                    label="Duration (min)"
                     min={MIN_DURATION_IN_SECONDS}
                     max={MAX_DURATION_IN_SECONDS}
-                    onChange={(e) => handleNumberInput(e.target.value, (value) => setDurationInMin(value))}
+                    onChange={(e) => handleNumberInput(e.target.value, (value) => setDurationInSeconds(value))}
                   />
                 </InputItem>
               </InputGroup>
-              {errors.map((error, i) => (
-                <p key={i}>{error}</p>
+              {errors.map((error) => (
+                <InputError key={error}>{error}</InputError>
               ))}
             </div>
           )
