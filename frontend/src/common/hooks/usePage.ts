@@ -29,7 +29,7 @@ export const usePage = <T>({ pageSize, requestPath, initialPage, orderBy, filter
   const [totalPageCount, setTotalPageCount] = useState(1);
   const [request, setRequest] = useState(`${requestPath}?start=${start}&limit=${pageSize}`);
   const filteringChanged = useRef(false);
-  const { loading, data: page, error } = useGetRequest<PageResponse<T>>(request);
+  const { loading, data: page, error, refetch } = useGetRequest<PageResponse<T>>(request);
 
   useEffect(() => {
     filteringChanged.current = true;
@@ -74,5 +74,17 @@ export const usePage = <T>({ pageSize, requestPath, initialPage, orderBy, filter
     setPageIndex(page);
   };
 
-  return { loading, page, hasMore, error, pageIndex, totalPageCount, pageSize, goToPage, nextPage, previousPage };
+  return {
+    loading,
+    page,
+    hasMore,
+    error,
+    pageIndex,
+    totalPageCount,
+    pageSize,
+    goToPage,
+    nextPage,
+    previousPage,
+    refetch,
+  };
 };

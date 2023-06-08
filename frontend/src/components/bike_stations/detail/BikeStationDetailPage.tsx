@@ -7,24 +7,15 @@ import { Spacer, SpacerDirection } from '../../common/Spacer';
 import { MapSection } from './MapSection';
 import { BasicInfoSection } from './BasicInfoSection';
 import { StatisticsSection } from './StatisticsSection';
-import { useContext, useEffect } from 'react';
-import { NotificationContext, NotificationType } from '../../Notification';
 
 export const BikeStationDetailPage = () => {
   const { id } = useParams();
-  const { showNotification } = useContext(NotificationContext);
 
-  const { loading, data, error } = useGetRequest<BikeStation>(`/bike-stations/${id}`);
-
-  useEffect(() => {
-    if (error) {
-      showNotification('Something went wrong and bike station details could not be fetched', NotificationType.Error);
-    }
-  }, [error]);
+  const { loading, data } = useGetRequest<BikeStation>(`/bike-stations/${id}`);
 
   if (loading) return <CenteredLoader />;
 
-  if (!data) return <p>Not found. TODO: Redirect</p>;
+  if (!data) return <p>Not found</p>;
 
   return (
     <AppPage>

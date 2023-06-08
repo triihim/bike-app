@@ -9,19 +9,24 @@ import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { FilterBy, OrderBy } from '../../common/types';
 import { NotificationContext, NotificationType } from '../Notification';
+import { PrimaryButton } from '../common/PrimaryButton';
+import { ModalContext } from '../Modal';
+import { JourneyModal } from './JourneyModal';
 
 export const JourneyListView = () => {
   const pageSize = 20;
   const [orderBy, setOrderBy] = useState<OrderBy<Journey>>({ property: 'departureStationName', direction: 'ASC' });
   const [filters, setFilters] = useState<Array<FilterBy<Journey>>>([]);
   const { showNotification } = useContext(NotificationContext);
+  const { setModalContent } = useContext(ModalContext);
 
-  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount, error } = usePage<Journey>({
-    pageSize,
-    requestPath: '/journeys/page',
-    orderBy,
-    filterBy: filters,
-  });
+  const { loading, page, hasMore, nextPage, previousPage, pageIndex, totalPageCount, error, refetch } =
+    usePage<Journey>({
+      pageSize,
+      requestPath: '/journeys/page',
+      orderBy,
+      filterBy: filters,
+    });
 
   useEffect(() => {
     if (error) {
@@ -53,9 +58,23 @@ export const JourneyListView = () => {
     );
   };
 
+  const onJourneyModalCancel = () => {
+    setModalContent(null);
+  };
+
+  const onJourneyModalSubmitted = () => {
+    setModalContent(null);
+    refetch();
+  };
+
+  const onAddJourneyClick = () => {
+    setModalContent(<JourneyModal onCancel={onJourneyModalCancel} onSubmitted={onJourneyModalSubmitted} />);
+  };
+
   return (
     <div>
       <HeadingWithLoader label="Journeys" loading={loading} />
+      <PrimaryButton onClick={onAddJourneyClick}>Add journey</PrimaryButton>
       {controls}
       <Spacer direction={SpacerDirection.Vertical} size={3} />
       <JourneyTable rows={page?.data} orderBy={orderBy} orderByColumn={orderByColumn} filterByValue={filterByValue} />

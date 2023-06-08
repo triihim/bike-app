@@ -102,15 +102,20 @@ export const getWhereBeginsLike = (
   filterColumn?: string | Array<string>,
   filterValue?: string | Array<string>,
 ) => {
-  filterColumn = typeof filterColumn === 'string' ? [filterColumn] : filterColumn;
-  filterValue = typeof filterValue === 'string' ? [filterValue] : filterValue;
+  const filterColumns = typeof filterColumn === 'string' ? [filterColumn] : filterColumn;
+  const filterValues = typeof filterValue === 'string' ? [filterValue] : filterValue;
 
-  if (filterColumn && filterValue && filterColumn.length === filterValue.length) {
-    return filterColumn.reduce((where, column, index) => {
-      return validColumnNames.includes(column) && filterValue
-        ? { ...where, [column]: ILike(`${filterValue[index]}%`) }
-        : where;
-    }, {});
+  const beginsLike = (value: string) => ILike(`${value}%`);
+
+  const addWhereLikeCondition = (where: object, column: string, index: number) => {
+    if (validColumnNames.includes(column) && filterValues) {
+      return { ...where, [column]: beginsLike(filterValues[index]) };
+    }
+    return where;
+  };
+
+  if (filterColumns && filterValues && filterColumns.length === filterValues.length) {
+    return filterColumns.reduce(addWhereLikeCondition, new Object());
   }
 
   return undefined;

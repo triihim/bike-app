@@ -8,6 +8,7 @@ import { BikeStationListPage } from './components/bike_stations/list/BikeStation
 import { JourneyListPage } from './components/journeys/JourneyListPage';
 import { BikeStationDetailPage } from './components/bike_stations/detail/BikeStationDetailPage';
 import { NotificationProvider } from './components/Notification';
+import { ModalProvider } from './components/Modal';
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,9 @@ root.render(
     <ThemeProvider theme={appTheme}>
       <GlobalStyles />
       <NotificationProvider>
-        <RouterProvider router={router} />
+        <ModalProvider>
+          <RouterProvider router={router} />
+        </ModalProvider>
       </NotificationProvider>
     </ThemeProvider>
   </React.StrictMode>,

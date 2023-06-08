@@ -1,7 +1,7 @@
 import { QueryRunner, Repository } from 'typeorm';
 import { BikeStation } from './BikeStation.entity';
 import { AppDataSource } from '../database/dataSource';
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { BikeStationAggregates, BikeStationStatistics, NumberIdRequest, PageRequest } from '../types';
 import { ApiError } from '../errors';
 import {
@@ -39,6 +39,15 @@ class BikeStationController {
       return res.json({ data: bikeStations, count });
     } catch (error) {
       next(ApiError.internal('Something went wrong with fetching the page'));
+    }
+  };
+
+  getAll = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const bikeStations = await this.bikeStationRepository.find({ order: { name: 'ASC' } });
+      res.json(bikeStations);
+    } catch (error) {
+      next(ApiError.internal('Something went fron with fetching the bike stations'));
     }
   };
 

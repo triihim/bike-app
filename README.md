@@ -2,20 +2,22 @@
 
 ## Brief description
 
-This repository contains the backend and frontend components of a web application designed to display data from journeys made with city bikes in the Helsinki Capital area. The application allows users to import bike station and journey data and then explore various statistics through the web UI.
+This repository contains the backend and frontend components of a web application designed to display data from journeys made with city bikes in the Helsinki Capital area.
 
 The backend of the application is implemented in TypeScript using Node.js and Express. It provides a RESTful API for fetching data from the database. The database used is PostgreSQL, which stores the journey and bike station data.
 
 The frontend of the web application is developed using React.js.
 
+App is testable at http://35.217.10.100/ (Google Cloud Compute Engine)
+
 ---
 
 ## Branches
 
-| Branch                                                              | Description                                                  | Status                                                                                                                                                                                         |
-| ------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [main](https://github.com/triihim/bike-app/tree/main)               | Working version of the app                                   | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=main&event=push)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml)        |
-| [development](https://github.com/triihim/bike-app/tree/development) | Newest features, but not as thoroughly tested as main-branch | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=development)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml) |
+| Branch                                                              | Description                                                  | Status                                                                                                                                                                                             |
+| ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [main](https://github.com/triihim/bike-app/tree/main)               | Working version of the app                                   | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=main&event=push)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml) |
+| [development](https://github.com/triihim/bike-app/tree/development) | Newest features, but not as thoroughly tested as main-branch | [![Test backend](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml/badge.svg?branch=development)](https://github.com/triihim/bike-app/actions/workflows/test-backend.yml)     |
 
 ---
 
@@ -127,8 +129,8 @@ There is mock data in the csv folders [/backend/data/bike_stations](/backend/dat
 Journey csv files
 
 1. https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv
-2. https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv
-3. https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
+2. https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
+3. https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv
 
 Bike station csv file
 
@@ -150,10 +152,11 @@ Due to discovering this pre-assignment only a few days before the deadline, ther
 | TODO | Mobile friendly UI. At the moment the UI does not scale, especially the tables                                                                          |
 | TODO | Own README files for backend and frontend                                                                                                               |
 | TODO | Caching. Currently, especially filtering sends a lot of requests to the backend despite debouncing. Data is anyway quite stable and hence cacheable     |
-| TODO | ~~Journey addition endpoint~~ and corresponding UI                                                                                                      |
+| TODO | ~~Journey addition endpoint and corresponding UI~~                                                                                                      |
 | TODO | Bike station addition endpoint and corresponding UI                                                                                                     |
 | TODO | Document npm scripts to this readme or to frontend/backend specific readme                                                                              |
 | TODO | Remove bike station names from journey entity, id reference is enough and does not add duplicate information                                            |
+| TODO | Configure nginx to always redirect to / due to frontend routing. Currently direct url access to anything else than / results to 404                     |
 
 ---
 

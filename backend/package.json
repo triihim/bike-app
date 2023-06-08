@@ -20,7 +20,9 @@
     "test:db": "docker compose --file ./docker-compose.test.yml --env-file ./environments/test.env up db",
     "test:db:clean": "docker compose --file ./docker-compose.test.yml --env-file ./environments/test.env down -v",
     "lint": "eslint .",
-    "format": "prettier --ignore-unknown --write ."
+    "format": "prettier --ignore-unknown --write .",
+    "start": "node ./build/src/main.js",
+    "start:container": "docker compose --file ./docker-compose.prod.yml --force-recreate --build server up"
   },
   "keywords": [],
   "author": "",

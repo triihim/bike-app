@@ -43,6 +43,14 @@ class AppConfig {
   get PAGINATION_MAX_LIMIT() {
     return tryParseInt(process.env.PAGINATION_MAX_LIMIT, 'Parsing process.env.PAGINATION_MAX_LIMIT');
   }
+
+  get FORCE_SYNC_DB() {
+    try {
+      return tryParseBool(process.env.FORCE_SYNC_DB, 'Parsing process.env.FORCE_SYNC_DB');
+    } catch (e) {
+      return false;
+    }
+  }
 }
 
 export default new AppConfig();

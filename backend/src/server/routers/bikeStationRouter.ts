@@ -8,5 +8,6 @@ const router = express.Router();
 router.get('/page', requirePageRequest, BikeStationController.page);
 router.get('/:id/statistics', requireNumberIdParam, BikeStationController.stationStatistics);
 router.get('/:id', requireNumberIdParam, BikeStationController.findOneById);
+router.get('/', BikeStationController.getAll);
 
 export default router;

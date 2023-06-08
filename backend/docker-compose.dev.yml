@@ -22,7 +22,7 @@ services:
       - db
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     command: npm run dev:server
     restart: unless-stopped
     ports:
