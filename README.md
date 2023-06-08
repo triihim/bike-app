@@ -2,11 +2,13 @@
 
 ## Brief description
 
-This repository contains the backend and frontend components of a web application designed to display data from journeys made with city bikes in the Helsinki Capital area. The application allows users to import bike station and journey data and then explore various statistics through the web UI.
+This repository contains the backend and frontend components of a web application designed to display data from journeys made with city bikes in the Helsinki Capital area.
 
 The backend of the application is implemented in TypeScript using Node.js and Express. It provides a RESTful API for fetching data from the database. The database used is PostgreSQL, which stores the journey and bike station data.
 
 The frontend of the web application is developed using React.js.
+
+App is testable at http://35.217.10.100/ (Google Cloud Compute Engine)
 
 ---
 
