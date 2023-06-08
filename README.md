@@ -156,6 +156,7 @@ Due to discovering this pre-assignment only a few days before the deadline, ther
 | TODO | Bike station addition endpoint and corresponding UI                                                                                                     |
 | TODO | Document npm scripts to this readme or to frontend/backend specific readme                                                                              |
 | TODO | Remove bike station names from journey entity, id reference is enough and does not add duplicate information                                            |
+| TODO | Configure nginx to always redirect to / due to frontend routing. Currently direct url access to anything else than / results to 404                     |
 
 ---
 
