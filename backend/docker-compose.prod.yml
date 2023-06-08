@@ -24,7 +24,7 @@ services:
     command: npm run start
     restart: unless-stopped
     ports:
-      - 80:80
+      - ${SERVER_PORT}:${SERVER_PORT}
     tty: true
     environment:
       - DB_HOST=bike-app-db
