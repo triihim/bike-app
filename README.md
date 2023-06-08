@@ -8,7 +8,7 @@ The backend of the application is implemented in TypeScript using Node.js and Ex
 
 The frontend of the web application is developed using React.js.
 
-App is testable at http://35.217.10.100/ (Google Cloud Compute Engine)
+**App is testable at http://app1.triihimaki.com/ (Google Cloud Compute Engine)**
 
 ---
 
