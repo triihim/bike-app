@@ -22,7 +22,7 @@
     "lint": "eslint .",
     "format": "prettier --ignore-unknown --write .",
     "start": "node ./build/src/main.js",
-    "start:container": "docker compose --file ./docker-compose.prod.yml up"
+    "start:container": "docker compose --file ./docker-compose.prod.yml --force-recreate --build server up"
   },
   "keywords": [],
   "author": "",
