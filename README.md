@@ -127,8 +127,8 @@ There is mock data in the csv folders [/backend/data/bike_stations](/backend/dat
 Journey csv files
 
 1. https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv
-2. https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv
-3. https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
+2. https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
+3. https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv
 
 Bike station csv file
 
