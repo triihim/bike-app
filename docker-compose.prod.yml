@@ -37,6 +37,7 @@ services:
       - DISABLE_LOGGING_DURING_DATA_IMPORT=${DISABLE_LOGGING_DURING_DATA_IMPORT}
       - SERVER_PORT=${SERVER_PORT}
       - PAGINATION_MAX_LIMIT=${PAGINATION_MAX_LIMIT}
+      - FORCE_SYNC_DB=${FORCE_SYNC_DB}
 
   client:
     container_name: bike-app-client-prod
