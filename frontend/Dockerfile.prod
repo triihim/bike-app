@@ -1,0 +1,7 @@
+FROM node:18 AS buildstage
+WORKDIR /frontend
+COPY . .
+RUN npm install && npm run build
+
+FROM nginx
+COPY --from=buildstage /frontend/build /usr/share/nginx/html
