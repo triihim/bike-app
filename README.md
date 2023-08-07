@@ -8,8 +8,6 @@ The backend of the application is implemented in TypeScript using Node.js and Ex
 
 The frontend of the web application is developed using React.js.
 
-**App is testable at http://app1.triihimaki.com/ (Google Cloud Compute Engine)**
-
 ---
 
 ## Branches
@@ -99,12 +97,6 @@ npm run test:withdb
 ```
 
 ## Data importing
-
-**DISCLAIMER**: I took liberty to make some assumptions on what I consider valid data and what gets imported into the database :grin:
-Details on parsing can be found under:
-
-- [./backend/src/bike_stations/csvMapping.ts](./backend/src/bike_stations/csvMapping.ts)
-- [./backend/src/journeys/csvMapping.ts](./backend/src/journeys/csvMapping.ts)
 
 To initialize the database with bike stations and journeys from csv files, place the csv files to
 
